@@ -90,8 +90,12 @@ STATIC_URL = '/static/'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 TEMPLATE_DIRS=( 
-        os.path.join(BASE_DIR),
+        os.path.join(BASE_DIR,'template'),
         )
+
+from django.core.urlresolvers import reverse
+ROOT_URL=''
+LOGIN_URL= ROOT_URL + reverse('login')
 
 try:
     from local_settings import *

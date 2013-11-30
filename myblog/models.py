@@ -3,7 +3,11 @@ from django.contrib.auth.models import User
 
 class Blog(models.Model):
     id = models.AutoField(primary_key=True)
-    authors = models.ManyToManyField(User)
+    name = models.CharField(max_length=200)
+    creator = models.ForeignKey(User, related_name="creator")
+    authors = models.ManyToManyField(User, related_name="authors")
+    followers = models.ManyToManyField(User, related_name="followers",
+            null=True, blank=True)
 
 class Tag(models.Model):
     id = models.AutoField(primary_key=True)

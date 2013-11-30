@@ -90,6 +90,11 @@ footer {
     top: 0;
     width: 50%; /* 6 columns */
   }
+  
+}
+
+.right-space{
+  margin-right:8px;
 }
     </style>
 	{% block script %}
@@ -108,45 +113,76 @@ footer {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'home' %}">My YouTube</a>
+          <a class="navbar-brand" href="{% url 'home' %}">OST Blog</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li id="nav_0"><a href="{% url 'home' %}">Home</a></li>
                 {% if user.is_authenticated %}
-                <li id="nav_3"><a href="{% url 'upload_view' %}">Upload Video</a></li>
-                <li id="nav_4"><a href="{% url 'my_video_view' %}">My Video</a></li>
+                <li id="nav_3"><a href="">Upload Video</a></li>
+                <li id="nav_4"><a href="">My Blogs</a></li>
                 {% endif %}
                 <li id="nav_1"><a href="{% url 'about'%}">About</a></li>
                 <li id="nav_2"><a href="#contact">Contact</a></li>
             </ul>
-            {% if user.is_authenticated %}
-            <form class="navbar-form navbar-right">
-                <div class="form-group">
-                    <label style="color:white">Welcome, {{ user.first_name }}</label>
-                </div>
-                <div class="form-group">
-                  <a href="{% url 'logout' %}" style="font-size:small; margin-left:5px; color:white">Logout</a>
-                </div>
-            </form>
-
+             <ul class="nav navbar-nav navbar-right">
+               
+              {% if user.is_authenticated %}
+              <li class="dropdown pull-right">
+                <a href="#" class="dropdown-toggle"
+                  data-toggle="dropdown">Welcome, {{user.first_name}}
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">My Blogs</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <!--<li class="dropdown-header">Header</li>-->
+                  <li><a href="#"><span class="glyphicon glyphicon-user right-space " ></span>Profile</a></li>
+                  <li><a href="{%url 'logout'%}"><span class="glyphicon glyphicon-log-out right-space " ></span>Logout</a></li>
+                </ul>
+              </li>              
             {% else %}
-            <form class="navbar-form navbar-right" 
-                action="{% url 'login_interact' %}" method="POST">
+              <li><a href="{% url 'sign_up'%}">Sign Up</a></li>
+              <li class="dropdown">
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign in <b class="caret"></b></a>
+                <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+                  <li>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <form class="form" role="form" method="post" action="{%url 'login_interact'%}" accept-charset="UTF-8" id="login-nav">
+                          {%csrf_token%}
+                          <div class="form-group">
+                            <label class="sr-only" for="exampleInputEmail2">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail2" name="email" placeholder="Email address" required>
+                          </div>
+                          <div class="form-group">
+                            <label class="sr-only" for="exampleInputPassword2">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword2" 
+                              name="password" placeholder="Password" required>
+                          </div>
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox"> Remember me
+                            </label>
+                          </div>
+                          <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-block">Sign in</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="divider"></li>
+                  <li>
+                    <input class="btn btn-primary btn-block" type="button" id="sign-in-google" value="Sign In with Google">
+                    <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter" value="Sign In with Twitter">
+                  </li>
+                </ul>
+              </li>
 
-                {% csrf_token %}
-                <input type="hidden" id="current_url" name="next" value="{% url 'home' %}">
-                <div class="form-group">
-                    <input type="text" name="email" placeholder="Email" class="form-control">
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password"
-                        placeholder="Password" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-success">Login</button>
-                <a href="{% url 'sign_up' %}" style="font-size:small; margin-left:5px; color:white">Sign Up</a>
-
-            </form>
+            </ul>
             {% endif %}
 
         </div><!-- /.nav-collapse -->
@@ -171,24 +207,6 @@ footer {
         </div><!--/span-->
 
         <!--<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">-->
-
-<!--{% if user.is_authenticated %}-->
-    <!--<p>Welcome, {{ user.username }}. Thanks for logging in.</p>-->
-<!--{% else %}-->
-<!--[><form class="form-signin" style="padding:5px; border:1px solid; border-radius:5px;border-color:#D0D0D0; "><]-->
-    <!--[>{% csrf_token %}<]-->
-    <!--[><h4 class="form-signin-heading">Please Login</h4><]-->
-    <!--[><input type="text" class="form-control" style="margin:5px;" placeholder="Email address" required autofocus><]-->
-    <!--[><input type="password" class="form-control" style="margin:5px" placeholder="Password" required><]-->
-    <!--[>[><label class="checkbox"><]<]-->
-        <!--[>[><input type="checkbox" value="remember-me"> Remember me<]<]-->
-        <!--[>[></label><]<]-->
-    <!--[><div style="text-align:right"><]-->
-        <!--[><a style="font-size:x-small; margin-right:5px">Sign Up</a><]-->
-        <!--[><button class="btn btn-success btn-xs" type="submit">Login</button><]-->
-    <!--[></div><]-->
-<!--[></form><]-->
-<!--{% endif %}-->
 
           <!--<div class="list-group" style="margin-top:10px">-->
             <!--<a href="#" class="list-group-item active">Link</a>-->
