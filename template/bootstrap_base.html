@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+{% load url from future %}
+{% load staticfiles %}
+
+<html lang="en">
+  <head>
+    <title>
+    {% block title %}
+    {% endblock %}
+    </title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="http://www.gravatar.com/avatar/b1e8078dfb6708acfa9df99b20bce4bd.png">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+
+    <!-- Bootstrap core CSS -->
+    <!--<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">-->
+
+    <!-- Custom styles for this template -->
+    <!--<link href="http://getbootstrap.com/examples/offcanvas/offcanvas.css" rel="stylesheet">-->
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        function setNavActive(id){
+            document.getElementById(id).setAttribute("class","active");
+        }
+
+    </script>
+    <style type="text/css">
+/*
+ * Style tweaks
+ * --------------------------------------------------
+ */
+html {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+body {
+  padding-top: 70px;
+}
+footer {
+  padding: 30px 0;
+}
+
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 767px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -50%; /* 6 columns */
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -50%; /* 6 columns */
+  }
+
+  .row-offcanvas-right.active {
+    right: 50%; /* 6 columns */
+  }
+
+  .row-offcanvas-left.active {
+    left: 50%; /* 6 columns */
+  }
+
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 50%; /* 6 columns */
+  }
+}
+    </style>
+	{% block script %}
+	
+	{% endblock %}
+
+  </head>
+
+  <body>
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}">My YouTube</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li id="nav_0"><a href="{% url 'home' %}">Home</a></li>
+                {% if user.is_authenticated %}
+                <li id="nav_3"><a href="{% url 'upload_view' %}">Upload Video</a></li>
+                <li id="nav_4"><a href="{% url 'my_video_view' %}">My Video</a></li>
+                {% endif %}
+                <li id="nav_1"><a href="{% url 'about'%}">About</a></li>
+                <li id="nav_2"><a href="#contact">Contact</a></li>
+            </ul>
+            {% if user.is_authenticated %}
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <label style="color:white">Welcome, {{ user.first_name }}</label>
+                </div>
+                <div class="form-group">
+                  <a href="{% url 'logout' %}" style="font-size:small; margin-left:5px; color:white">Logout</a>
+                </div>
+            </form>
+
+            {% else %}
+            <form class="navbar-form navbar-right" 
+                action="{% url 'login_interact' %}" method="POST">
+
+                {% csrf_token %}
+                <input type="hidden" id="current_url" name="next" value="{% url 'home' %}">
+                <div class="form-group">
+                    <input type="text" name="email" placeholder="Email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password"
+                        placeholder="Password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success">Login</button>
+                <a href="{% url 'sign_up' %}" style="font-size:small; margin-left:5px; color:white">Sign Up</a>
+
+            </form>
+            {% endif %}
+
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </div><!-- /.navbar -->
+
+    <div class="container">
+
+      <!--<div class="row row-offcanvas row-offcanvas-right">-->
+      <div class="row">
+
+        <!--<div class="col-xs-12 col-sm-9">-->
+        <div class="col-xs-12 col-sm-12">
+          <!--<p class="pull-right visible-xs">-->
+            <!--<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>-->
+          <!--</p>-->
+          <div class="row">
+             {% block body %}
+		
+             {% endblock %}           
+          </div><!--/row-->
+        </div><!--/span-->
+
+        <!--<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">-->
+
+<!--{% if user.is_authenticated %}-->
+    <!--<p>Welcome, {{ user.username }}. Thanks for logging in.</p>-->
+<!--{% else %}-->
+<!--[><form class="form-signin" style="padding:5px; border:1px solid; border-radius:5px;border-color:#D0D0D0; "><]-->
+    <!--[>{% csrf_token %}<]-->
+    <!--[><h4 class="form-signin-heading">Please Login</h4><]-->
+    <!--[><input type="text" class="form-control" style="margin:5px;" placeholder="Email address" required autofocus><]-->
+    <!--[><input type="password" class="form-control" style="margin:5px" placeholder="Password" required><]-->
+    <!--[>[><label class="checkbox"><]<]-->
+        <!--[>[><input type="checkbox" value="remember-me"> Remember me<]<]-->
+        <!--[>[></label><]<]-->
+    <!--[><div style="text-align:right"><]-->
+        <!--[><a style="font-size:x-small; margin-right:5px">Sign Up</a><]-->
+        <!--[><button class="btn btn-success btn-xs" type="submit">Login</button><]-->
+    <!--[></div><]-->
+<!--[></form><]-->
+<!--{% endif %}-->
+
+          <!--<div class="list-group" style="margin-top:10px">-->
+            <!--<a href="#" class="list-group-item active">Link</a>-->
+            <!--<a href="#" class="list-group-item">Link</a>-->
+            <!--<a href="#" class="list-group-item">Link</a>-->
+            <!--<a href="#" class="list-group-item">Link</a>-->
+            <!--<a href="#" class="list-group-item">Link</a>-->
+            <!--<a href="#" class="list-group-item">Link</a>-->
+            <!--<a href="#" class="list-group-item">Link</a>-->
+            <!--<a href="#" class="list-group-item">Link</a>-->
+            <!--<a href="#" class="list-group-item">Link</a>-->
+            <!--<a href="#" class="list-group-item">Link</a>-->
+          <!--</div>-->
+        <!--</div>[>/span<]-->
+
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; Shouda Wang, 2013</p>
+      </footer>
+
+    </div><!--/.container-->
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle=offcanvas]').click(function() {
+                $('.row-offcanvas').toggleClass('active');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $("#current_url").val(window.location.pathname)
+            console.log($("#current_url").val())
+            console.log("hehe")
+        });
+    </script>
+
+	{% block script_end_body %}
+	
+
+	{% endblock %}
+  </body>
+</html>

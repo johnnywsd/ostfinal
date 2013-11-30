@@ -1,0 +1,121 @@
+
+{% extends "bootstrap_base.html" %}
+
+{% load url from future %}
+{% load staticfiles %}
+
+ {% block title %} Update User Info
+ {% endblock %} 
+ 
+{% block script %}
+<style type="text/css">
+    
+.img_container {
+    width: 185px;
+    height: 200px;
+}
+
+.img{
+    width: 100%;
+    height: 100%;
+}
+</style>
+
+{% endblock %} 
+
+{% block script_end_body %}
+<script type="text/javascript">setNavActive("nav_4")</script>
+<script src="http://getbootstrap.com/docs-assets/js/holder.js"></script>
+<script src="{% static 'plugins/raty/lib/jquery.raty.min.js' %}"></script>
+
+<script>
+{% for item in video_info_list %}
+$(document).ready(function(){
+    $("#rating_{{item.video_id}}").raty({
+      path     : "{% static 'plugins/raty/lib/img' %}",
+      starHalf : 'star-half.png',
+      starOff  : 'star-off.png',
+      starOn   : 'star-on.png',
+      score    : '{{ item.rating }}',
+      noRatedMsg: 'Not rated yet!',
+      readOnly : true
+    });
+});
+{% endfor %}
+</script>
+
+
+{% endblock %}
+
+{% block body %}
+
+<!--<div class="jumbotron">-->
+    <!--<h1>My YouTube</h1>-->
+    <!--<p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>-->
+<!--</div>-->
+
+<h1>My Videos  </h1>
+<hr />
+
+<div class="col-sm-12 col-md-12">
+  {% for item in video_info_list %}
+  <div class="row">
+      <!--<div class="col-sm-4 col-md-4" style="width:auto; max-height:200px">-->
+      <div class="col-sm-4 col-md-4" style="max-height:200px">
+        <a href="{% url 'theatre_view' item.video_id %}" class="thumbnail" style="max-width:300px">
+          {% if item.thumbnail_url %}
+          <div class="img">
+              <img src="{{ item.thumbnail_url }}" class="img" >
+          </div> 
+          {% else %}
+          <img data-src="holder.js/300x200">
+          {% endif %}
+        </a>
+      </div>
+      <!--<div class="col-sm-4 col-sm-offset-5 col-md-4 col-md-offset-5" >-->
+      <div class="col-sm-8 col-md-8 " >
+        <h3>{{ item.title }}</h3>
+        <p>by <a href="">{{ item.uploader }}</a></p>
+        <p><small>Published on {{item.published_date}}</small></p>
+        <p><span id="rating_{{item.video_id}}"></span><small>({{item.num_votes}} votes)</small></p>
+        <p> <small>{{ item.description }}</small> </p>
+        <a href="{% url 'delete_video_interact' item.video_id %}" class="btn btn-xs btn-danger">Delete</a>
+      </div>
+  </div>
+  <hr style="color:grey">
+  {% endfor %}   
+  
+</div>
+
+<!--
+<div class="col-sm-12 col-md-12">
+  {% for item in video_info_list %}
+  <div class="row">
+      <div class="col-sm-4 col-md-4" style="width:auto; max-height:200px">
+        <a href="{% url 'theatre_view' item.video_id %}" class="thumbnail" style="max-width:300px">
+          {% if item.thumbnail_url %}
+          <div class="img">
+              <img src="{{ item.thumbnail_url }}" class="img" >
+          </div> 
+          {% else %}
+          <img data-src="holder.js/300x200">
+          {% endif %}
+        </a>
+      </div>
+      <div>
+        <h3>{{ item.title }}</h3>
+        <p>by <a href="">{{ item.uploader }}</a></p>
+        <p> <small>{{ item.description }}</small> </p>
+      </div>
+  </div>
+  <hr style="color:grey">
+  {% endfor %}   
+  
+</div>
+
+-->
+
+{% endblock %}
+
+
+

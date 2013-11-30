@@ -1,0 +1,135 @@
+
+{% extends "bootstrap_base.html" %}
+{% load url from future %}
+{% load staticfiles %}
+
+{% block title %}Watching: {{ title }}
+{% endblock %} 
+ 
+{% block script %}
+
+<script>
+
+</script>
+{% endblock %}
+
+{% block script_end_body %}
+<script type="text/javascript">setNavActive("nav_0")</script>
+<script src="{% static 'plugins/rating/rating.js' %}"></script>
+<script src="{% static 'plugins/raty/lib/jquery.raty.min.js' %}"></script>
+<script src="http://jwpsrv.com/library/ybgXeE1SEeOEHRIxOQfUww.js"></script>  
+    <script type='text/javascript'>
+        jwplayer('player').setup({
+        file: '{{ video_url }}',
+        image: '{{ thumbnail_url }}',
+        title: '{{ title }}',
+        width: '100%',
+        aspectratio: '16:9',
+        fallback: 'false'
+        });
+    </script>
+
+<style type="text/css">
+.img_container {
+    width: 185px;
+    height: 200px;
+}
+
+.img{
+    width: 100%;
+    height: 100%;
+}
+</style>
+<script> </script>
+<script>
+    $('#star').raty({
+        path: "{% static 'plugins/raty/lib/img' %}",
+        //cancel   : true,
+         // cancelOff: 'cancel-off-big.png',
+          //cancelOn : 'cancel-on-big.png',
+          //half     : true,
+          size     : 24,
+          starHalf : 'star-half-big.png',
+          starOff  : 'star-off-big.png',
+          starOn   : 'star-on-big.png',
+          score    : '{{ rating }}',
+          noRatedMsg: 'Not rated yet!',
+          readOnly : true
+    });
+
+    $('#star_my').raty({
+        path: "{% static 'plugins/raty/lib/img' %}",
+        //cancel   : true,
+         // cancelOff: 'cancel-off-big.png',
+          //cancelOn : 'cancel-on-big.png',
+          //half     : true,
+          size     : 24,
+          starHalf : 'star-half.png',
+          starOff  : 'star-off.png',
+          starOn   : 'star-on.png',
+          score    : '{{ my_rating }}',
+          click: function(score, evt) {
+                    $.ajax({
+                            url: "{% url 'update_rating_ajax' %}",
+                            data: { 'video_id': {{ video_id }} , 'rating': score },
+                            type: 'GET',
+                            timeout: 10000,
+                            dataType: "text"
+                        }).done(function(){
+                            alert("OK"); 
+                        }).error(function(){
+                            alert("Error");
+                        })
+                    }
+
+    });
+
+    {% if not user.is_authenticated %}
+    $('#star_my').raty('readOnly', true);
+    {% endif %}
+
+</script>
+{% endblock %}
+
+{% block body %}
+
+<h1>{{title}} </h1>
+<hr />
+
+<div class="col-sm-12 col-md-12">
+
+    <div id='player'></div>
+
+    <div class="container">
+      <div class="row lead">
+        <div>
+            <span>Rating:</span>
+            <br>
+            <span id="star"></span>
+            <small style="margin-right:5px">({{num_votes}} votes)</small>
+            <br>
+        </div>
+        <div style="margin-top:10px">
+            <span>Your Rating:</span>
+            <br>
+            <span id="star_my"></span>
+            {% if not user.is_authenticated %}
+            <small>(Sign in to Rate)</small>
+            {% endif %}
+        </div>
+        <div style="margin-top:20px"><small><a href="{{video_url}}">Download</a></small></div>
+      </div>
+      <div class="row lead">
+          <div class="col-sm-9">
+              <h3>Description</h3>
+              <p class="well">{{description}} <p>
+              <p class="pull-right" style="margin-right:20px"> by {{uploader}} <p>
+          </div>
+      </div>
+    </div>    
+</div>
+
+{% endblock %}
+
+
+

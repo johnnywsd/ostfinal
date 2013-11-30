@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{% load url from future %}
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <title>{{ title }}</title>
+</head>
+<body>
+   <h1>{{ title }}</h1>
+   <form method='post' action='{%url 'my_youtube_app.views.try_form'%}'>
+       <!-- display the form fields -->
+       {{ form.as_p }}
+       {% csrf_token %}
+       <input type="text" name="name"></input>
+       <input type="text" name="age"></input>
+
+       <!-- submit button -->
+       <input type='submit'>
+   </form>
+</body>
+</html>

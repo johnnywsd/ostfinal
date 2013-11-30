@@ -1,0 +1,93 @@
+
+{% extends "bootstrap_base.html" %}
+{% load url from future %}
+
+ {% block title %} Upload Video
+{% endblock %} {% block script %}
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" 
+    href="http://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.0.1-p7/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" 
+    href="http://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.0.1-p7/css/bootstrap-theme.min.css">
+
+
+{% endblock %} {% block script_end_body %}
+<script type="text/javascript">setNavActive("nav_3")</script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.0.1-p7/js/bootstrap.min.js"></script>
+
+{% endblock %}
+
+{% block body %}
+
+<!--<div class="container" style="margin-top:5%">-->
+    <!--<div class="row">-->
+<!--<div class="col-sm-12">-->
+<div class="col-sm-12">
+</div>
+    <form class="form-horizontal" style="margin-top:30px" role="form" method="post" 
+        action="{% url 'upload_interact' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">Title</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="title" name="title"
+                placeholder="Title" value="{{form.title.value|default_if_none:""}}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">Video File</label>
+            <div class="col-sm-6">
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <div class="input-group">
+                        <div class="form-control uneditable-input span3" 
+                            data-trigger="fileinput">
+                            <i class="glyphicon glyphicon-file 
+                                fileinput-exists"></i> 
+                            <span class="fileinput-filename"></span>
+                        </div>
+                        <span class="input-group-addon btn btn-default btn-file">
+                            <span class="fileinput-new">Select file</span>
+                            <span class="fileinput-exists">Change</span>
+                            <input type="file" name="video_file">
+                        </span>
+                        <a href="#" 
+                            class="input-group-addon btn btn-default fileinput-exists" 
+                            data-dismiss="fileinput">
+                            Remove
+                        </a>
+                    </div>
+                </div>
+                {% if form.video_file.errors %}
+                <div class="alert alert-danger">We only support mp4 file.</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-6">
+                <textarea class="form-control" name="description" rows="8">{{form.description.value|default_if_none:""}}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-6">
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+        </form>
+<div class="col-sm-12">
+</div>
+<!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+
+
+{% endblock %}
+
+
+
