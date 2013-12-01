@@ -50,3 +50,7 @@ def my_blogs_view(request):
     data_dict['author_blogs'] = author_blogs 
     data_dict['follower_blogs'] = follower_blogs
     return render(request, 'my_blogs.html', data_dict)
+
+def test_page_view(request):
+    data_dict = {}
+    return render(request, 'long.html', data_dict)

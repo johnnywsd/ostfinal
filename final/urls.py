@@ -18,5 +18,7 @@ urlpatterns = patterns('',
     url(r'^login_interact$', 'myblog.interacts.login_user', name='login_interact'),
     url(r'^logout$', 'myblog.interacts.logout_user', name='logout'),
     url(r'^my_blogs$', 'myblog.views.my_blogs_view', name='my_blogs_view'),
+    url(r'^test_page$', 'myblog.views.test_page_view', name='test_page'),
+    url(r'^my_blogs/', include('final.my_blogs_urls')),
 
 )

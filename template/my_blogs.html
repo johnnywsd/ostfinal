@@ -1,0 +1,137 @@
+
+{% extends "bootstrap_base.html" %}
+
+{% load url from future %}
+{% load staticfiles %}
+
+ {% block title %} My Blogs
+ {% endblock %} 
+ 
+{% block script %}
+<style type="text/css">
+    
+.img_container {
+    width: 185px;
+    height: 200px;
+}
+
+.img{
+    width: 100%;
+    height: 100%;
+}
+
+.title{
+ margin-left:25px;
+}
+.item-blog{
+  line-height:3px;
+  font-size:15px;
+}
+.my-panel-heading{
+  font-size:17px;
+}
+
+.my-panel-heading span{
+  display:block;
+}
+</style>
+
+{% endblock %} 
+
+{% block script_end_body %}
+<script type="text/javascript">setNavActive("nav_4")</script>
+
+<script type="text/javascript" src="https://rawgithub.com/house9/jquery-iframe-auto-height/master/release/jquery.browser.js">
+</script>
+<script type="text/javascript" src="https://rawgithub.com/house9/jquery-iframe-auto-height/master/release/jquery.iframe-auto-height.js">
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("li.item-blog > a").click(function(){
+          //$(this).addClass('active');
+          $("li.item-blog").removeClass('active');
+          $(this).parent("li.item-blog").addClass('active');
+          <!--console.log($(this).html());-->
+          $("div.my-panel-heading").parent('.panel').addClass('panel-info');
+          $(this).closest('.panel').removeClass('panel-info');
+          $(this).closest('.panel').addClass('panel-success');
+        })
+      $("div.my-panel-heading").click(function(){
+          $(".panel").removeClass('panel-success');
+          $(".panel").addClass('panel-info');
+          $(this).parent(".panel").removeClass('panel-info');
+          $(this).parent(".panel").addClass('panel-success');
+          $("li.item-blog").removeClass('active');
+          <!--console.log($(this).html());-->
+        });
+        $("div.my-panel-heading").parent('panel').addClass('active');
+      });
+
+  $(document).ready(function(){
+    $('iframe').iframeAutoHeight({debug: true});    
+   });
+</script>
+
+{% endblock %}
+
+{% block body %}
+
+
+<h1 class="title">My Blogs</h1>
+<hr />
+
+<div class="col-sm-3">
+  <div class="panel panel-info">
+    <div class="panel-heading my-panel-heading">
+      <a href="{%url 'my_blogs_own_view' %}" target="content"><span>I Own</span></a>
+    </div>
+    <!--<a href="#"><div class="panel-heading my-panel-heading">I Own</div></a>-->
+    <div class="panel-body">
+      <ul class="nav nav-pills nav-stacked">
+        {%for item in own_blogs%}
+        <li class="item-blog">
+          <a href="{%url 'my_blogs_own_view' item.id %}" 
+            target="content">{{item.name}}</a>
+        </li>
+        {%endfor%}
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-info">
+    <div class="panel-heading my-panel-heading">
+      <a href="{%url 'my_blogs_shared_view' %}" target="content"><span>Shared with Me</span></a>
+    </div>
+    <div class="panel-body">
+      <ul class="nav nav-pills nav-stacked">
+        {%for item in author_blogs%}
+        <li class="item-blog"><a href="{%url 'my_blogs_shared_view' item.id %}" target="content">{{item.name}}</a></li>
+        {%endfor%}
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-info">
+    <div class="panel-heading my-panel-heading"><a href="#"><span>Following</span></a></div>
+    <div class="panel-body">
+      <ul class="nav nav-pills nav-stacked">
+        {%for item in follower_blogs%}
+        <li class="item-blog"><a href="#">{{item.name}}</a></li>
+        {%endfor%}
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="col-sm-9">
+  <div class="panel panel-info">
+    <iframe id="content" frameborder="0" width="100%">
+    </iframe>
+  </div>
+</div>
+{% endblock %}
+
+
+

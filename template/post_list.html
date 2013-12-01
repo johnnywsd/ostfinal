@@ -1,0 +1,42 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+
+  </head> 
+  <style type="text/css">
+    .post-content{
+      margin-top: 10px;
+    }
+    .continue-link{
+      margin-left:10px;
+    }
+  </style>
+<body>
+
+  {% block info %}
+
+  {% endblock %}
+
+  {%for post in posts%}
+  <div style="padding:0px 20px">
+    <h2><a href="#">{{post.title}}</a></h2>
+    <small>post on {{post.create_date}}, by {{post.author_name}}</small>
+    <!--<br>-->
+    <p class="post-content">{{post.content}}<span class="continue-link"><a href="#">Continue Reading ...</a></span></p>
+    <p><small>Post in <a href="#">tags</a></small></p>
+    <hr style="width:100%"/>
+  </div>
+  {%endfor%}
+
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

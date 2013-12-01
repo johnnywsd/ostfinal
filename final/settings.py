@@ -97,6 +97,9 @@ from django.core.urlresolvers import reverse
 ROOT_URL=''
 LOGIN_URL= ROOT_URL + reverse('login')
 
+DATE_FORMAT = '%Y-%m-%d'
+
+
 try:
     from local_settings import *
 except:
