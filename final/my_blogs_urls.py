@@ -24,7 +24,11 @@ urlpatterns = patterns('',
         'myblog.my_blogs_views.my_blogs_following_view',
         name='my_blogs_following_view'),
 
-    url(r'^following/(?P<thread_id>\d+)$',
+    url(r'^following/(?P<blog_id>\d+)$',
         'myblog.my_blogs_views.my_blogs_following_view',
         name='my_blogs_following_view'),
+
+    url(r'^post_detail/(?P<post_id>\d+)$',
+        'myblog.my_blogs_views.post_detail_embedded_view',
+        name='post_detail_embedded_view'),
 )

@@ -1,4 +1,3 @@
-{% load url from future %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -20,19 +19,11 @@
   </style>
 <body>
 
-  {% block info %}
-
-  {% endblock %}
-
-  {%for post in posts%}
-  {%url 'post_detail_embedded_view' post.id as post_detail_url%}
   <div style="padding:0px 20px">
-    <h2><a href="{{post_detail_url}}">{{post.title}}</a></h2>
-    <small>post on {{post.create_date}}, by {{post.author_name}}</small>
-    <!--<br>-->
-    <p class="post-content">{{post.content}}<span class="continue-link"><a href="{{post_detail_url}}">Continue Reading ...</a></span></p>
+    <h2><a href="{%url 'home'%}">{{post.title}}</a></h2>
+    <small>post on {{create_date}}, by {{author_name}}</small>
     <p><small>Post in 
-      {%for tag in post.tags%}
+      {%for tag in post.tags.all%}
         {%if forloop.last%}
           <a href="#">{{tag.name}}.</a>
         {%else%}
@@ -40,9 +31,9 @@
         {%endif%}
       {%endfor%}
     </small></p>
+    <p class="post-content">{{content}}</p>
     <hr style="width:100%"/>
   </div>
-  {%endfor%}
 
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>

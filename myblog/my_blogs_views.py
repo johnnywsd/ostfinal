@@ -56,9 +56,11 @@ def get_post_list(blogs):
     for post in posts:
         d = {}
         d['title'] = post.title
+        d['id'] = post.id
         d['content'] = post.content[:500]
         d['author_name'] = post.author.first_name
         d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
+        d['tags'] = list(post.tags.all())
         a_list.append(d)
     return a_list
 
@@ -73,6 +75,7 @@ def my_blogs_own_view(request, blog_id=None):
         blog = Blog.objects.get(pk=blog_id)
         blogs = [blog,]
         data_dict['info_title'] = blog.name
+        data_dict['owner'] = blog.creator.first_name
         
     else:
         blogs = user.creator_blogs.all();
@@ -94,13 +97,13 @@ def my_blogs_own_view(request, blog_id=None):
 def my_blogs_shared_view(request, blog_id=None):
     data_dict ={}
     user = request.user
-    a_list = []
     author_names_set = set()
 
     if(blog_id):
         blog = Blog.objects.get(pk=blog_id)
         blogs = [blog,]
         data_dict['info_title'] = blog.name
+        data_dict['owner'] = blog.creator.first_name
         
     else:
         blogs = user.author_blogs.filter(~Q(creator=user));
@@ -116,8 +119,46 @@ def my_blogs_shared_view(request, blog_id=None):
     data_dict['author_names'] = ', '.join(author_names_set)
     data_dict['post_num'] = len(a_list)
     data_dict['posts'] = a_list
-    return render(request, 'post_list_own.html', data_dict)
+    return render(request, 'post_list_shared.html', data_dict)
 
 @login_required
-def my_blogs_following_view(request):
-    pass
+def my_blogs_following_view(request, blog_id=None):
+    data_dict ={}
+    user = request.user
+    author_names_set = set()
+
+    if(blog_id):
+        blog = Blog.objects.get(pk=blog_id)
+        blogs = [blog,]
+        data_dict['info_title'] = blog.name
+        data_dict['owner'] = blog.creator.first_name
+        
+    else:
+        blogs = user.follower_blogs.all();
+        data_dict['info_title'] = 'Blogs I Following'
+
+    a_list = get_post_list(blogs)
+
+    for blog in blogs:
+        authors = blog.authors.all()
+        for author in authors:
+            author_names_set.add(author.first_name)
+
+    data_dict['author_names'] = ', '.join(author_names_set)
+    data_dict['post_num'] = len(a_list)
+    data_dict['posts'] = a_list
+    return render(request, 'post_list_following.html', data_dict)
+
+@login_required
+def post_detail_embedded_view(request, post_id=None):
+    data_dict = {}
+    a_list = []
+    if(post_id):
+        post = Post.objects.get(pk=post_id)
+        data_dict['post'] = post
+        data_dict['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
+        data_dict['author_name'] = post.author.first_name
+        data_dict['content'] = post.content
+    return render(request, 'post_embedded.html', data_dict)
+
+

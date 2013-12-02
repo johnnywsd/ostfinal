@@ -69,7 +69,7 @@
       });
 
   $(document).ready(function(){
-    $('iframe').iframeAutoHeight({debug: true});    
+    $('iframe').iframeAutoHeight({debug: true, resetToMinHeight: true, minHeight: 500});    
    });
 </script>
 
@@ -113,11 +113,15 @@
   </div>
 
   <div class="panel panel-info">
-    <div class="panel-heading my-panel-heading"><a href="#"><span>Following</span></a></div>
+    <div class="panel-heading my-panel-heading">
+      <a href="{%url 'my_blogs_following_view' %}" target="content"><span>Following</span></a>
+    </div>
     <div class="panel-body">
       <ul class="nav nav-pills nav-stacked">
         {%for item in follower_blogs%}
-        <li class="item-blog"><a href="#">{{item.name}}</a></li>
+        <li class="item-blog">
+          <a href="{%url 'my_blogs_following_view' item.id %}" target="content">{{item.name}}</a>
+        </li>
         {%endfor%}
       </ul>
     </div>
