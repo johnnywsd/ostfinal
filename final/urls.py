@@ -2,6 +2,8 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 admin.autodiscover()
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = patterns('',
     # Examples:
@@ -21,4 +23,4 @@ urlpatterns = patterns('',
     url(r'^test_page$', 'myblog.views.test_page_view', name='test_page'),
     url(r'^my_blogs/', include('final.my_blogs_urls')),
 
-)
+) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
