@@ -91,6 +91,7 @@ def my_blogs_own_view(request, blog_id=None):
     data_dict['author_names'] = ', '.join(author_names_set)
     data_dict['post_num'] = len(a_list)
     data_dict['posts'] = a_list
+    data_dict['is_editable'] = True
     return render(request, 'post_list_own.html', data_dict)
 
 @login_required
@@ -159,6 +160,20 @@ def post_detail_embedded_view(request, post_id=None):
         data_dict['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
         data_dict['author_name'] = post.author.first_name
         data_dict['content'] = post.content
+        #data_dict['post_id'] = post_id
+        if post.author.id == request.user.id:
+            data_dict['is_editable'] = True
     return render(request, 'post_embedded.html', data_dict)
 
+@login_required
+def post_edit_embedded_view(request, post_id=None):
+    data_dict = {}
+    if(post_id):
+        post = Post.objects.get(pk=post_id)
+        data_dict['post'] = post
+        #data_dict['post_id'] = post_id
+        data_dict['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
+        data_dict['author_name'] = post.author.first_name
+        data_dict['content'] = post.content
+    return render(request, 'post_embedded_edit.html', data_dict)
 

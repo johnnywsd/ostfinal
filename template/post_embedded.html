@@ -16,11 +16,17 @@
     .continue-link{
       margin-left:10px;
     }
-  </style>
+    .post-title{
+      margin-right:10px
+    }  </style>
 <body>
 
   <div style="padding:0px 20px">
-    <h2><a href="{%url 'home'%}">{{post.title}}</a></h2>
+    <h2><a href="javascript:void(0)" class="post-title">{{post.title}}</a>
+      {%if is_editable%}
+      <small><a class="edit-link" href="{%url 'post_edit_embedded_view' post.id%}">( Edit ) </a></small>
+      {%endif%}
+    </h2>
     <small>post on {{create_date}}, by {{author_name}}</small>
     <p><small>Post in 
       {%for tag in post.tags.all%}

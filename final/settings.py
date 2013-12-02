@@ -94,6 +94,7 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = '/var/www/mystatic/ostfinal/static'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 TEMPLATE_DIRS=( 
         os.path.join(BASE_DIR,'template'),

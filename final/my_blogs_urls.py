@@ -31,4 +31,8 @@ urlpatterns = patterns('',
     url(r'^post_detail/(?P<post_id>\d+)$',
         'myblog.my_blogs_views.post_detail_embedded_view',
         name='post_detail_embedded_view'),
+
+    url(r'^post_edit/(?P<post_id>\d+)$',
+        'myblog.my_blogs_views.post_edit_embedded_view',
+        name='post_edit_embedded_view'),
 )

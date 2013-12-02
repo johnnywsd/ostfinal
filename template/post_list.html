@@ -17,6 +17,12 @@
     .continue-link{
       margin-left:10px;
     }
+    .post-title{
+      margin-right:10px
+    }
+    .edit-link{
+      font-size:16px
+    }
   </style>
 <body>
 
@@ -27,7 +33,12 @@
   {%for post in posts%}
   {%url 'post_detail_embedded_view' post.id as post_detail_url%}
   <div style="padding:0px 20px">
-    <h2><a href="{{post_detail_url}}">{{post.title}}</a></h2>
+    <h2>
+      <a class="post-title" href="{{post_detail_url}}">{{post.title}}</a>
+      {%if is_editable%}
+      <small><a class="edit-link" href="{%url 'post_edit_embedded_view' post.id%}">( Edit ) </a></small>
+      {%endif%}
+    </h2>
     <small>post on {{post.create_date}}, by {{post.author_name}}</small>
     <!--<br>-->
     <p class="post-content">{{post.content}}<span class="continue-link"><a href="{{post_detail_url}}">Continue Reading ...</a></span></p>
