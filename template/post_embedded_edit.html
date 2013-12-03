@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
 
-  </head> 
   <style type="text/css">
     .post-content{
       margin-top: 10px;
@@ -25,15 +24,27 @@
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.4/select2.css">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.4/select2.js"> </script>
+
   <script type="text/javascript">
     $(document).ready(function(){
         CKEDITOR.replace( 'post_content' , {
             filebrowserUploadUrl: '/uploader/upload.php?type=Files',
             height:'600'
-            <!--resize_minHeight:'600' -->
           });
+
+        var tags = JSON.parse('{{tags_json|safe}}');
+        console.log(tags);
+        $("#tags").select2({
+          <!--tags:["red", "green", "blue"],-->
+          <!--tags: [{1:"red"}],-->
+          tags: tags,
+          tokenSeparators: [",", " ", ";"]});
         })
   </script>
+
+</head> 
 <body>
 
 <form class="form-horizontal" method="POST" action="" 
@@ -48,8 +59,20 @@
       <div class="form-group">
         <label for="post_date" class="col-sm-2 control-label" >Create Date : </label>
         <div class="col-sm-3">
-          <input type="text" readonly
-          class="form-control" id="post_date" placeholder="Title" value="{{create_date}}">
+          <span id="post_date" class="form-control" >{{create_date}}</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="author" class="col-sm-2 control-label" >Author : </label>
+        <div class="col-sm-3">
+          <span id="author" class="form-control" >{{author_name}}</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="tags" class="col-sm-2 control-label" >Tags : </label>
+        <div class="col-sm-3">
+          <input type="hidden" id="tags" style="width:100%">
         </div>
       </div>
 

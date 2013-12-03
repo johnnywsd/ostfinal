@@ -16,6 +16,8 @@ from myblog.models import Blog
 from myblog.models import Post
 from django.db.models import Q
 
+import json
+
 
 @login_required
 def my_blogs_view(request):
@@ -175,5 +177,13 @@ def post_edit_embedded_view(request, post_id=None):
         data_dict['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
         data_dict['author_name'] = post.author.first_name
         data_dict['content'] = post.content
+        tags = post.tags.all()
+        tags_dict = {}
+        tags_list = []
+        for tag in tags:
+            #tags_dict[tag.id] = tag.name
+            tags_list.append(tag.name)
+        #data_dict['tags_json'] = json.dumps(tags_dict)
+        data_dict['tags_json'] = json.dumps(tags_list)
     return render(request, 'post_embedded_edit.html', data_dict)
 
