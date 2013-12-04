@@ -14,6 +14,7 @@ from django.conf import settings
 from django.http import Http404
 from myblog.models import Blog
 from myblog.models import Post
+from myblog.models import Tag
 from django.db.models import Q
 
 import json
@@ -185,5 +186,10 @@ def post_edit_embedded_view(request, post_id=None):
             tags_list.append(tag.name)
         #data_dict['tags_json'] = json.dumps(tags_dict)
         data_dict['tags_json'] = json.dumps(tags_list)
+        all_tags = Tag.objects.all().order_by('name')
+        all_tags_list = [x.name for x in all_tags]
+        all_tags_json = json.dumps(all_tags_list)
+        data_dict['all_tags_json'] = all_tags_json
+            
     return render(request, 'post_embedded_edit.html', data_dict)
 

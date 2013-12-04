@@ -19,6 +19,9 @@
     .input-title{
       width:400px;
     }
+    .my-button-group{
+      margin-right:30px;
+    }
   </style>
   <script src="{% static 'myblog/plugins/ckeditor/ckeditor.js' %}"></script>
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -34,21 +37,27 @@
             height:'600'
           });
 
+        var all_tags = JSON.parse('{{all_tags_json|safe}}');
         var tags = JSON.parse('{{tags_json|safe}}');
         console.log(tags);
         $("#tags").select2({
           <!--tags:["red", "green", "blue"],-->
           <!--tags: [{1:"red"}],-->
-          tags: tags,
-          tokenSeparators: [",", " ", ";"]});
+          tags: all_tags,
+          tokenSeparators: [",", " "],
+          });
+        $("#tags").val(tags).trigger("change");
         })
   </script>
 
 </head> 
 <body>
 
-<form class="form-horizontal" method="POST" action="" 
+<form class="form-horizontal" method="POST" 
+    action="{%url 'post_edit_interact' post.id%}" 
     style="padding:0px 20px; margin-top: 30px;">
+    {%csrf_token%}
+    <input type="hidden" name="post_id" value="{{post.id}}">
       <div class="form-group">
         <label for="title" class="col-sm-2 control-label">Title : </label>
         <div class="col-sm-8">
@@ -71,30 +80,37 @@
 
       <div class="form-group">
         <label for="tags" class="col-sm-2 control-label" >Tags : </label>
-        <div class="col-sm-3">
+        <div class="col-sm-6">
+          <!--<input type="hidden" id="tags" style="width:100%"-->
+          <!--value="{{tags_json|safe}}">-->
           <input type="hidden" id="tags" style="width:100%">
         </div>
       </div>
+      <div class="form-group ">
+        <div class="pull-right col-sm-3">
+          <div class="pull-right">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-warning">Discard</button>
+          </div>
+        </div>
+      </div>
 
-      <div>
-        <small>post on {{create_date}}, by {{author_name}}</small>
-        <p><small>Post in 
-          {%for tag in post.tags.all%}
-            {%if forloop.last%}
-              <a href="#">{{tag.name}}.</a>
-            {%else%}
-              <a href="#">{{tag.name}}, </a>
-            {%endif%}
-          {%endfor%}
-        </small></p>
+      <div class="form-group">
+        <div class="col-sm-12">
+          <textarea id="post_content" name="content" rows="50" cols="70">
+            {{content|safe}}
+          </textarea>
+        </div>
       </div>
-        <!--<p class="post-content">{{content}}</p>-->
-      <div>
-        <textarea id="post_content" rows="50" cols="70">
-          {{content|safe}}
-        </textarea>
+
+      <div class="form-group ">
+        <div class="pull-right col-sm-3">
+          <div class="pull-right">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-warning">Discard</button>
+          </div>
+        </div>
       </div>
-        <hr style="width:100%"/>
 </form>
 
  
