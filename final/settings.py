@@ -100,14 +100,16 @@ TEMPLATE_DIRS=(
         os.path.join(BASE_DIR,'template'),
         )
 
-from django.core.urlresolvers import reverse
+#from django.core.urlresolvers import reverse
 ROOT_URL=''
-LOGIN_URL= ROOT_URL + reverse('login')
+#LOGIN_URL= ROOT_URL + reverse('login')
+LOGIN_URL= ROOT_URL + 'login'
 
 DATE_FORMAT = '%Y-%m-%d'
 
-
-try:
-    from local_settings import *
-except:
-    print 'No Local Settings Found'
+IS_LOCAL = False
+if IS_LOCAL:
+    try:
+        from local_settings import *
+    except:
+        print 'No Local Settings Found'
