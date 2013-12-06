@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+import os
+import uuid
+from django.core.files.storage import default_storage as s3_storage
+
 class Blog(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
@@ -45,4 +49,20 @@ class Comment(models.Model):
     def __unicode__(self):
         return self.content
 
+IMG_PATH = 'img'
+def filename2uuid(instance, filename, path=IMG_PATH):
+    splited = filename.split('.')
+    if len(splited) > 1:
+        ext = filename.split('.')[-1]
+        ret = "%s.%s" % (uuid.uuid4(), ext)
+    else:
+        ret = "%s" % uuid.uuid4()
+    #return ret
+    return os.path.join(path, ret) 
+
+class Image(models.Model):
+    id = models.AutoField(primary_key=True)
+    img = models.ImageField(storage=s3_storage,
+            upload_to=filename2uuid, blank=True, null=True)
+    post = models.ForeignKey(Post, blank=True, null=True)
 # Create your models here.

@@ -107,6 +107,13 @@ LOGIN_URL= ROOT_URL + 'login'
 
 DATE_FORMAT = '%Y-%m-%d'
 
+#django-storages
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = 'AKIAIF7WGEZSJFZIEAFQ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'ostfinal'
+
+
 IS_LOCAL = False
 if IS_LOCAL:
     try:
