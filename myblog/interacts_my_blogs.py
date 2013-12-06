@@ -31,9 +31,16 @@ def post_edit_interact(request, post_id=None):
             tags_str = form.cleaned_data['tags']
             tag_names = tags_str.split(',')
             tags = Tag.objects.filter(name__in=tag_names)
+            post = Post.objects.get(pk=post_id)
+            post.title = title
+            post.content = content
+            post.tags = tags
+            post.save()
 
-            return HttpResponse(tags)
-            return HttpResponse(title+content+"<br>"+tags_str)
+            nextUrl = reverse('post_detail_embedded_view', args=(post_id))
+            return HttpResponseRedirect(nextUrl)
+            #return HttpResponse(tags)
+            #return HttpResponse(title+content+"<br>"+tags_str)
         
 
     #return redirect(nextUrl)
