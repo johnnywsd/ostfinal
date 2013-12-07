@@ -169,8 +169,9 @@ def post_detail_embedded_view(request, post_id=None):
     return render(request, 'post_embedded.html', data_dict)
 
 @login_required
-def post_edit_embedded_view(request, post_id=None):
+def post_edit_embedded_view(request, blog_id=None, post_id=None):
     data_dict = {}
+    user = request.user
     if(post_id):
         post = Post.objects.get(pk=post_id)
         data_dict['post'] = post
@@ -186,10 +187,14 @@ def post_edit_embedded_view(request, post_id=None):
             tags_list.append(tag.name)
         #data_dict['tags_json'] = json.dumps(tags_dict)
         data_dict['tags_json'] = json.dumps(tags_list)
-        all_tags = Tag.objects.all().order_by('name')
-        all_tags_list = [x.name for x in all_tags]
-        all_tags_json = json.dumps(all_tags_list)
-        data_dict['all_tags_json'] = all_tags_json
+
+    blog_options = user.author_blogs.all()
+    data_dict['blog_options'] = blog_options
+    all_tags = Tag.objects.all().order_by('name')
+    all_tags_list = [x.name for x in all_tags]
+    all_tags_json = json.dumps(all_tags_list)
+    data_dict['all_tags_json'] = all_tags_json
+
             
     return render(request, 'post_embedded_edit.html', data_dict)
 

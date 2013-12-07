@@ -5,3 +5,4 @@ class PostForm(forms.Form):
     title = forms.CharField(max_length=400)
     content = forms.CharField()
     tags = forms.CharField()
+    blog_id = forms.IntegerField()

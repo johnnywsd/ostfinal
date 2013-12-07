@@ -32,7 +32,15 @@ urlpatterns = patterns('',
         'myblog.my_blogs_views.post_detail_embedded_view',
         name='post_detail_embedded_view'),
 
+    url(r'^post_edit/$',
+        'myblog.my_blogs_views.post_edit_embedded_view',
+        name='post_edit_embedded_view'),
+
     url(r'^post_edit/(?P<post_id>\d+)$',
+        'myblog.my_blogs_views.post_edit_embedded_view',
+        name='post_edit_embedded_view'),
+
+    url(r'^post_edit/(?P<blog_id>\d+)/(?P<post_id>\d+)$',
         'myblog.my_blogs_views.post_edit_embedded_view',
         name='post_edit_embedded_view'),
 
@@ -43,4 +51,10 @@ urlpatterns = patterns('',
     url(r'^post_edit_interact/(?P<post_id>\d+)$',
         'myblog.interacts_my_blogs.post_edit_interact',
         name='post_edit_interact'),
+
+    url(r'^post_edit_interact/(?P<blog_id>\d+)/(?P<post_id>\d+)/$',
+        'myblog.interacts_my_blogs.post_edit_interact',
+        name='post_edit_interact'),
+
+
 )
