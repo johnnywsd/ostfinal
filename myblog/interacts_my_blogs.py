@@ -17,6 +17,7 @@ from django.http import Http404
 from myforms import PostForm
 from myblog.models import Blog
 from myblog.models import Tag
+from myblog import constant
 
 
 @login_required
@@ -29,9 +30,17 @@ def post_edit_interact(request, blog_id=None, post_id=None):
             #post_id = form.cleaned_data['post_id']
             title = form.cleaned_data['title']
             content = form.cleaned_data['content']
-            tags_str = form.cleaned_data['tags']
+            tags_str = form.cleaned_data['tags'].strip()
             tag_names = tags_str.split(',')
-            tags = Tag.objects.filter(name__in=tag_names)
+            tags = []
+            if not tags_str:
+                tag_names = [constant.NO_TAG]
+
+            for tag_name in tag_names:
+               tag, res = Tag.objects.get_or_create(name=tag_name,
+                       defaults={'name': tag_name}) 
+               tags.append(tag)
+
             if post_id:
                 post = Post.objects.get(pk=post_id)
             else:
@@ -62,3 +71,18 @@ def post_edit_interact(request, blog_id=None, post_id=None):
 @login_required
 def post_add_interact(request, blog_id=None):
     return post_edit_interact(request, blog_id, None) 
+
+@login_required
+def post_delete_interact(request, post_id):
+    user = request.user
+    post = Post.objects.get(pk=post_id)
+    blog = post.blog
+    blog_id = blog.id
+    if user.id == blog.creator.id:
+        nextUrl = reverse('my_blogs_own_view', kwargs={'blog_id': blog_id})
+    elif user in blog.authors :
+        nextUrl = reverse('my_blogs_shared_view', kwargs={'blog_id': blog_id})
+    post.delete()
+    return HttpResponseRedirect(nextUrl)
+    
+    

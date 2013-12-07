@@ -37,6 +37,12 @@
       <a class="post-title" href="{{post_detail_url}}">{{post.title}}</a>
       {%if is_editable%}
       <small><a class="edit-link" href="{%url 'post_edit_embedded_view' post_id=post.id%}">( Edit ) </a></small>
+      <!--<small><a class="edit-link" href="{%url 'post_delete_interact' post_id=post.id%}">( Delete ) </a></small>-->
+      <small><a class="edit-link" 
+          data-post-id="{{post.id}}" 
+          data-post-title="{{post.title}}" 
+          onclick="showModal(event)" 
+          href="javascript:void(0)"> ( Delete ) </a></small>
       {%endif%}
     </h2>
     <small>post on {{post.create_date}}, by {{post.author_name}}</small>
@@ -57,6 +63,25 @@
 
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+<!--<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">-->
+  <!--Launch demo modal-->
+<!--</button>-->
+<script type="text/javascript">
+  function showModal(e){
+    var caller = e.target || e.srcElement;
+    var post_id = $(caller).data('post-id');
+    var post_title = $(caller).data('post-title');
+    console.log(post_id);
+    var $deleteModal = window.parent.$("#deleteModal");
+    $deleteModal.find("#post_title").text(post_title);
+    $deleteModal.find("#deleteBtn").data("post-id",post_id);
+    $deleteModal.modal()
+    <!--console.log(window.parent.$("#deleteModal").html())-->
+    <!--window.parent.$("#deleteModal").modal()-->
+  }
+</script>
+<!-- Modal -->
 
 </body>
 

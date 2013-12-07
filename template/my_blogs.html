@@ -71,6 +71,20 @@
   $(document).ready(function(){
     $('iframe').iframeAutoHeight({debug: true, resetToMinHeight: true, minHeight: 800});    
    });
+
+  function deletePost(e){
+    var caller = e.target || e.srcElement;
+    console.log(caller);
+    var post_id = $(caller).data('post-id');
+    console.log(post_id);
+    var deleteUrl = "{%url 'post_delete_interact' post_id=0 %}"
+    deleteUrl = deleteUrl.replace('0', post_id);
+    console.log(deleteUrl);
+
+    <!--window.open("index","content")-->
+    window.open(deleteUrl,"content")
+    $("#deleteModal").modal('hide');
+}
 </script>
 
 {% endblock %}
@@ -135,6 +149,33 @@
     </iframe>
   </div>
 </div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Delete Confirm</h4>
+      </div>
+      <div class="modal-body">
+          <p style="font-size:20px; color:red">
+          Are you sure you want to delete the post:
+          </p>
+          <p style="font-size:28px;"><span id="post_title"></span></p>
+        </div>
+      <div class="modal-footer">
+        <form action="" target="content">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger" >Delete</button>
+          <a id="deleteBtn" href="javascript:void(0)" onclick="deletePost(event)"
+            class="btn btn-danger" data-post-id="1" >Delete</a>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 {% endblock %}
 
 
