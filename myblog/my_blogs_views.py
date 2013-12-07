@@ -79,10 +79,12 @@ def my_blogs_own_view(request, blog_id=None):
         blogs = [blog,]
         data_dict['info_title'] = blog.name
         data_dict['owner'] = blog.creator.first_name
+        data_dict['blog_id'] = blog_id
         
     else:
         blogs = user.creator_blogs.all();
         data_dict['info_title'] = 'Blogs I Own'
+        data_dict['blog_id'] = 0
 
     a_list = get_post_list(blogs)
 
@@ -175,6 +177,7 @@ def post_edit_embedded_view(request, blog_id=None, post_id=None):
     if(post_id):
         post = Post.objects.get(pk=post_id)
         data_dict['post'] = post
+        blog_id = post.blog.id
         #data_dict['post_id'] = post_id
         data_dict['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
         data_dict['author_name'] = post.author.first_name
@@ -189,7 +192,10 @@ def post_edit_embedded_view(request, blog_id=None, post_id=None):
         data_dict['tags_json'] = json.dumps(tags_list)
 
     blog_options = user.author_blogs.all()
+
+    
     data_dict['blog_options'] = blog_options
+    data_dict['blog_id'] = blog_id
     all_tags = Tag.objects.all().order_by('name')
     all_tags_list = [x.name for x in all_tags]
     all_tags_json = json.dumps(all_tags_list)

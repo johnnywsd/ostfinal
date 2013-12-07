@@ -22,6 +22,7 @@ from myblog.models import Tag
 @login_required
 def post_edit_interact(request, blog_id=None, post_id=None):
     user = request.user
+    #return HttpResponse(post_id)
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
@@ -46,7 +47,9 @@ def post_edit_interact(request, blog_id=None, post_id=None):
             post.tags = tags
             post.save()
 
-            nextUrl = reverse('post_detail_embedded_view', args=(str(post.id)) )
+            nextUrl = reverse('post_detail_embedded_view', 
+                            kwargs={'post_id': str(post.id)}
+                            )
 
             return HttpResponseRedirect(nextUrl)
 
@@ -57,23 +60,5 @@ def post_edit_interact(request, blog_id=None, post_id=None):
     #return redirect(nextUrl)
 
 @login_required
-def post_add_interact(request, blog=None):
-    user = request.user
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            #post_id = form.cleaned_data['post_id']
-            title = form.cleaned_data['title']
-            content = form.cleaned_data['content']
-            tags_str = form.cleaned_data['tags']
-            tag_names = tags_str.split(',')
-            tags = Tag.objects.filter(name__in=tag_names)
-            post = Post()
-            post.author = user
-            post.title = title
-            post.blog = Blog.objects.get(pk=blog_id)
-            post.content = content
-            post.tags = tags
-            post.save()
-            nextUrl = reverse('post_detail_embedded_view', args=(post_id))
-            return HttpResponseRedirect(nextUrl)
+def post_add_interact(request, blog_id=None):
+    return post_edit_interact(request, blog_id, None) 

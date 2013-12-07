@@ -38,7 +38,7 @@
           });
 
         var all_tags = JSON.parse('{{all_tags_json|safe}}');
-        {%if tags%}
+        {%if tags_json%}
         var tags = JSON.parse('{{tags_json|safe}}');
         {%else%}
         var tags = null;
@@ -54,8 +54,8 @@
         $("#tags").val(tags).trigger("change");
 
         $("#blog").select2();
-        {%if post%}
-        $("#blog").val("{{post.blog.id}}").trigger("change");
+        {%if blog_id%}
+        $("#blog").val("{{blog_id}}").trigger("change");
         {%endif%}
       })
   </script>
@@ -63,9 +63,9 @@
 </head> 
 <body>
 
-{%if post_id%}
+{%if post%}
 <form class="form-horizontal" method="POST" 
-    action="{%url 'post_edit_interact' blog_id=post.blog.id post_id=post.id%}" 
+    action="{%url 'post_edit_interact' post_id=post.id%}" 
     style="padding:0px 20px; margin-top: 30px;">
 {%else%}
 <form class="form-horizontal" method="POST" 

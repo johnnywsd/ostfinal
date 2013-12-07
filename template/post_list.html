@@ -36,7 +36,7 @@
     <h2>
       <a class="post-title" href="{{post_detail_url}}">{{post.title}}</a>
       {%if is_editable%}
-      <small><a class="edit-link" href="{%url 'post_edit_embedded_view' blog_id=1 post_id=post.id%}">( Edit ) </a></small>
+      <small><a class="edit-link" href="{%url 'post_edit_embedded_view' post_id=post.id%}">( Edit ) </a></small>
       {%endif%}
     </h2>
     <small>post on {{post.create_date}}, by {{post.author_name}}</small>
