@@ -103,3 +103,4 @@ def get_users_by_ids_ajax(request):
     data_json = json.dumps(data_dict)
         
     return HttpResponse(data_json, mimetype='application/json')
+

@@ -27,7 +27,11 @@
       <small><a class="edit-link" href="{%url 'post_edit_embedded_view' post.id%}">( Edit ) </a></small>
       {%endif%}
     </h2>
-    <small>post on {{create_date}}, by {{author_name}}</small>
+    <small>Author: <strong>{{author_name}}</strong></small>
+    <br>
+    <small>Post on {{create_date}}, </small>
+    <br>
+    <small>Latest update {{modify_date}}</small>
     <p><small>Post in 
       {%for tag in post.tags.all%}
         {%if forloop.last%}

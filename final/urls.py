@@ -4,6 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 from django.conf import settings
 from django.conf.urls.static import static
+from myblog.rss import RssFeed
 
 urlpatterns = patterns('',
     # Examples:
@@ -27,4 +28,7 @@ urlpatterns = patterns('',
         name='get_users_ajax'),
     url(r'^get_users_by_ids_ajax$', 'myblog.interacts.get_users_by_ids_ajax',
         name='get_users_by_ids_ajax'),
+
+    url(r'^rss/(?P<blog_id>\d+)/$', RssFeed(),
+        name='rss'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

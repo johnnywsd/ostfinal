@@ -1,4 +1,5 @@
 {% extends "post_list.html" %}
+{% load staticfiles %}
 {% block script%}
 <script type="text/javascript">
 
@@ -34,7 +35,14 @@
 {% block info %}
 <div class="panel panel-warning" style="margin:10px;">
   <div class="panel-heading">
-    <h3 class="panel-title">{{info_title}}</h3>
+    <h3 class="panel-title">{{info_title}}
+      {%if blog_id%}
+      <a href={%url 'rss' blog_id=blog_id%} target="_blank"> 
+        <img src="{% static 'myblog/imgs/icon_rss_25x25.png' %}"  
+        class="pull-right">
+      </a>
+      {%endif%}
+    </h3>
   </div>
   <div class="panel-body" style="padding-bottom:0px">
       <table class="table table-hover table-bordered">

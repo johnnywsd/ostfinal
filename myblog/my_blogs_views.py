@@ -178,7 +178,8 @@ def post_detail_embedded_view(request, post_id=None):
     if(post_id):
         post = Post.objects.get(pk=post_id)
         data_dict['post'] = post
-        data_dict['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
+        data_dict['create_date'] = post.create_time.strftime(constant.DATETIME_FORMAT)
+        data_dict['modify_date'] = post.modify_time.strftime(constant.DATETIME_FORMAT)
         data_dict['author_name'] = post.author.first_name
         data_dict['content'] = post.content
         #data_dict['post_id'] = post_id
