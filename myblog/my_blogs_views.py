@@ -43,28 +43,28 @@ def get_post_list_by_id(blog_ids):
     a_list = []
     if(blog_ids):
         posts = Post.objects.filter(blog__id__in=blog_ids).order_by('-create_time')
-    for post in posts:
-        d = {}
-        d['title'] = post.title
-        d['content'] = post.content[:500]
-        d['author_name'] = post.author.first_name
-        d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
-        a_list.append(d)
+        for post in posts:
+            d = {}
+            d['title'] = post.title
+            d['content'] = post.content[:500]
+            d['author_name'] = post.author.first_name
+            d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
+            a_list.append(d)
     return a_list
 
 def get_post_list(blogs):
     a_list = []
     if(blogs):
         posts = Post.objects.filter(blog__in=blogs).order_by('-create_time')
-    for post in posts:
-        d = {}
-        d['title'] = post.title
-        d['id'] = post.id
-        d['content'] = post.content[:500]
-        d['author_name'] = post.author.first_name
-        d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
-        d['tags'] = list(post.tags.all())
-        a_list.append(d)
+        for post in posts:
+            d = {}
+            d['title'] = post.title
+            d['id'] = post.id
+            d['content'] = post.content[:500]
+            d['author_name'] = post.author.first_name
+            d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
+            d['tags'] = list(post.tags.all())
+            a_list.append(d)
     return a_list
 
 @login_required
@@ -191,7 +191,9 @@ def post_edit_embedded_view(request, blog_id=None, post_id=None):
         #data_dict['tags_json'] = json.dumps(tags_dict)
         data_dict['tags_json'] = json.dumps(tags_list)
 
-    blog_options = user.author_blogs.all()
+    blogs_shared = user.author_blogs.all()
+    blogs_own = user.creator_blogs.all()
+    blog_options = list(blogs_own) + list(blogs_shared)
 
     
     data_dict['blog_options'] = blog_options

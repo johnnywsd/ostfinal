@@ -15,6 +15,7 @@ from django.core.files import File
 from django.conf import settings
 from django.http import Http404
 from myforms import PostForm
+from myforms import BlogForm
 from myblog.models import Blog
 from myblog.models import Tag
 from myblog import constant
@@ -85,4 +86,21 @@ def post_delete_interact(request, post_id):
     post.delete()
     return HttpResponseRedirect(nextUrl)
     
-    
+@login_required
+def blog_edit_interact(request):
+    user = request.user
+    if request.method == 'POST':
+        form = BlogForm(request.POST)
+        if form.is_valid():
+            blog_id = form.cleaned_data['blog_id']
+            blog_name = form.cleaned_data['name']
+            author_emails = form.cleaned_data['author_emails']
+
+            if not blog_id: #create new blog
+                blog = Blog()
+                blog.name = blog_name
+                blog.creator = user
+                blog.save()
+    nextUrl = reverse('my_blogs_view')
+    return HttpResponseRedirect(nextUrl)
+

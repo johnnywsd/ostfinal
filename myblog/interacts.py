@@ -14,6 +14,7 @@ import os
 from django.core.files import File
 from django.conf import settings
 from django.http import Http404
+import json
 
 
 def sign_up_interact(request):
@@ -33,6 +34,7 @@ def sign_up_interact(request):
         user.username = username
         user.first_name = first_name
         user.last_name = last_name
+        user.email = email
         user.save()
         user = authenticate(username=username, password=password)
         login(request,user)
@@ -76,3 +78,30 @@ def logout_user(request):
     logout(request)
     return redirect(settings.LOGIN_URL)
 
+@login_required
+def get_users_ajax(request):
+    q = request.GET.get('q')
+#Example: {results:[{id:1, text:'Red'},{id:2, text:'Blue'}], more:true}
+    user_emails = [ x.email for x in User.objects.filter(email__icontains=q)[0:5] ]
+
+    result_list = []
+    for email in user_emails:
+        d = {}
+        d['id'] = email
+        d['text'] = email
+        result_list.append(d)
+    data_dict = {'results': result_list}
+    data_json = json.dumps(data_dict)
+        
+    #data_list = []
+    #result_list = []
+    #d={}
+    #d['id'] = 'aa';
+    #d['text'] = 'aa';
+    #d2={}
+    #d2['id'] = 'bb';
+    #d2['text'] = 'ab';
+    #result_list = [d,d2]
+    #data_dict = {'results':result_list}
+    #data_json = json.dumps(data_dict)
+    return HttpResponse(data_json, mimetype='application/json')

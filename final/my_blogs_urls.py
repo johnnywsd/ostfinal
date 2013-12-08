@@ -64,4 +64,8 @@ urlpatterns = patterns('',
         'myblog.interacts_my_blogs.post_delete_interact',
         name='post_delete_interact'),
 
+    url(r'^blog_edit_interact/$',
+        'myblog.interacts_my_blogs.blog_edit_interact',
+        name='blog_edit_interact'),
+
 )

@@ -23,4 +23,5 @@ urlpatterns = patterns('',
     url(r'^test_page$', 'myblog.views.test_page_view', name='test_page'),
     url(r'^my_blogs/', include('final.my_blogs_urls')),
 
+    url(r'^get_users_ajax$', 'myblog.interacts.get_users_ajax', name='get_users_ajax'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

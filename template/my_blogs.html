@@ -36,6 +36,8 @@
 }
 </style>
 
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.4/select2.css">
+
 {% endblock %} 
 
 {% block script_end_body %}
@@ -45,6 +47,8 @@
 </script>
 <script type="text/javascript" src="https://rawgithub.com/house9/jquery-iframe-auto-height/master/release/jquery.iframe-auto-height.js">
 </script>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.4/select2.js"> </script>
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -84,7 +88,44 @@
     <!--window.open("index","content")-->
     window.open(deleteUrl,"content")
     $("#deleteModal").modal('hide');
-}
+  }
+
+  function showCreateBlogModal(e){
+    var caller = e.target || e.srcElement;
+    var $modal = $("#editBlogModal");
+    var actionUrl = ""
+    <!--$modal.find("#editBlogForm").attr('action', actionUrl);-->
+    $modal.modal('show');
+  }
+
+  $(document).ready(function(){
+        var $author_emails = $("#author_emails")
+        $author_emails.select2({
+          placeholder: "Search Users",
+          tags:["red", "green", "blue"],
+          <!--tags: [{1:"red"}],-->
+          <!--tags: all_tags,-->
+          tokenSeparators: [",", " "],
+          multiple: true,
+          minimumInputLength: 1,
+          quietMillis : 200,
+          ajax: {
+              url : "{%url 'get_users_ajax'%}",
+              dataType: "json",
+              data: function (term, page) {
+                    console.log(term);
+                    return {
+                              q: term // search term
+                          };
+                    },
+              results: function (data, page) {
+                      return { results: data.results };
+                      <!--return  data ;-->
+                    }
+              }
+          });
+        <!--$author_emails.val(tags).trigger("change");-->
+    })
 </script>
 
 {% endblock %}
@@ -109,6 +150,10 @@
             target="content">{{item.name}}</a>
         </li>
         {%endfor%}
+        <li class="item-blog">
+        <a href="javascript:void(0)" 
+          onclick="showCreateBlogModal(event)" >( Create New Blog )</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -166,7 +211,6 @@
       <div class="modal-footer">
         <form action="" target="content">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-danger" >Delete</button>
           <a id="deleteBtn" href="javascript:void(0)" onclick="deletePost(event)"
             class="btn btn-danger" data-post-id="1" >Delete</a>
         </form>
@@ -176,6 +220,42 @@
 </div><!-- /.modal -->
 
 
+<div class="modal fade" id="editBlogModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Create New Blog</h4>
+      </div>
+
+      <div class="modal-body">
+        <form id="editBlogForm" action="{%url 'blog_edit_interact'%}" method="POST"
+          class="form-horizontal" role="form">
+          {% csrf_token %}
+          <input name="blog_id" type="hidden" value="">
+          <div class="form-group">
+            <label for="blog_name" class="col-sm-3 control-label">Blog Name</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" 
+              id="blog_name" name="name" required placeholder="Blog Name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="author_emails" class="col-sm-3 control-label">Invite Authors</label>
+            <div class="col-sm-8">
+              <input id="author_emails" type="hidden" name="author_emails"
+              style="width:100%">
+            </div>
+          </div>
+        </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" >Submit</button>
+      </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}
 
 
