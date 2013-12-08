@@ -1,4 +1,36 @@
 {% extends "post_list.html" %}
+{% block script%}
+<script type="text/javascript">
+
+  function showDeleteBlogModal(e){
+    var caller = e.target || e.srcElement;
+    var blog_id = $(caller).data('blog-id');
+    var blog_name = $(caller).data('blog-name');
+    console.log(blog_id);
+    var $deleteModal = window.parent.$("#deleteBlogModal");
+    console.log($deleteModal);
+    $deleteModal.find("#blog_name").text(blog_name);
+    $deleteModal.find("#deleteBtn").data("blog-id",blog_id);
+    $deleteModal.modal('show')
+    <!--console.log(window.parent.$("#deleteBlogModal").html())-->
+    <!--window.parent.$("#deleteBlogModal").modal()-->
+  }
+
+  function showEditBlogModal(e){
+    var caller = e.target || e.srcElement;
+    var blog_id = $(caller).data('blog-id');
+    var blog_name = $(caller).data('blog-name');
+    var $modal = window.parent.$("#editBlogModal");
+    $modal.find("#blog_id").val(blog_id);
+    $modal.find("#blog_name").val(blog_name);
+    var author_ids = "{{author_ids}}"
+    $modal.find("#author_emails").val(author_ids).trigger('change'); //It id list
+    console.log($modal.find("#author_emails").val()) 
+    $modal.modal('show');
+  }
+
+</script>
+{% endblock %}
 {% block info %}
 <div class="panel panel-warning" style="margin:10px;">
   <div class="panel-heading">
@@ -15,8 +47,24 @@
           <td>{{post_num}}</td>
         </tr>
       </table>
+      <div class="pull-left">
+      {%if blog_id %}
+      <a href="#" 
+        class="btn btn-info btn-sm" style="margin-bottom:10px"
+        data-blog-id="{{blog_id}}" 
+        data-blog-name="{{blog_name}}" 
+        onclick="showEditBlogModal(event)" >Edit Blog</a>
+      <a class="btn btn-danger btn-sm" style="margin-bottom:10px"
+          data-blog-id="{{blog_id}}" 
+          data-blog-name="{{blog_name}}" 
+          onclick="showDeleteBlogModal(event)"
+          href="javascript:void(0)">Delete Blog</a>
+      {%endif%}
+      </div>
       <div class="pull-right">
+        {%if blog_id %}
         <a href="{%url 'post_add_embedded_view' blog_id=blog_id %}" class="btn btn-success btn-sm" style="margin-bottom:10px">Create New Post</a>
+        {%endif%}
       </div>
   </div>
 </div>

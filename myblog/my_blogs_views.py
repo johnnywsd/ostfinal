@@ -73,6 +73,7 @@ def my_blogs_own_view(request, blog_id=None):
     user = request.user
     a_list = []
     author_names_set = set()
+    author_ids_set = set()
 
     if(blog_id):
         blog = Blog.objects.get(pk=blog_id)
@@ -80,6 +81,7 @@ def my_blogs_own_view(request, blog_id=None):
         data_dict['info_title'] = blog.name
         data_dict['owner'] = blog.creator.first_name
         data_dict['blog_id'] = blog_id
+        data_dict['blog_name'] = blog.name
         
     else:
         blogs = user.creator_blogs.all();
@@ -92,8 +94,10 @@ def my_blogs_own_view(request, blog_id=None):
         authors = blog.authors.all()
         for author in authors:
             author_names_set.add(author.first_name)
+            author_ids_set.add(str(author.id))
 
     data_dict['author_names'] = ', '.join(author_names_set)
+    data_dict['author_ids'] = ', '.join(author_ids_set)
     data_dict['post_num'] = len(a_list)
     data_dict['posts'] = a_list
     data_dict['is_editable'] = True

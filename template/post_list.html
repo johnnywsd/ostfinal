@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
 
-  </head> 
   <style type="text/css">
     .post-content{
       margin-top: 10px;
@@ -24,6 +23,12 @@
       font-size:16px
     }
   </style>
+
+  {%block script%}
+
+  {%endblock%}
+
+  </head> 
 <body>
 
   {% block info %}
@@ -74,6 +79,7 @@
     var post_title = $(caller).data('post-title');
     console.log(post_id);
     var $deleteModal = window.parent.$("#deleteModal");
+    <!--console.log($deleteModal);-->
     $deleteModal.find("#post_title").text(post_title);
     $deleteModal.find("#deleteBtn").data("post-id",post_id);
     $deleteModal.modal()

@@ -94,13 +94,36 @@ def blog_edit_interact(request):
         if form.is_valid():
             blog_id = form.cleaned_data['blog_id']
             blog_name = form.cleaned_data['name']
-            author_emails = form.cleaned_data['author_emails']
-
+            author_ids_str = form.cleaned_data['author_emails'].strip()
+            if author_ids_str:
+                author_ids = author_ids_str.split(',')
+                try:
+                    author_ids.remove(str(user.id))
+                except:
+                    pass
+                #return HttpResponse(author_ids)
+                authors = User.objects.filter(pk__in=author_ids)
+            else:
+                authors = []
+            
             if not blog_id: #create new blog
                 blog = Blog()
-                blog.name = blog_name
-                blog.creator = user
-                blog.save()
+            else:
+                blog = Blog.objects.get(pk=blog_id)
+
+            blog.name = blog_name
+            blog.creator = user
+            blog.save()
+            blog.authors =authors
+            blog.save()
     nextUrl = reverse('my_blogs_view')
     return HttpResponseRedirect(nextUrl)
 
+@login_required
+def blog_delete_interact(request, blog_id):
+    user = request.user
+    blog = Blog.objects.get(pk=blog_id)
+    if user.id == blog.creator.id:
+        blog.delete()
+    nextUrl = reverse('my_blogs_view')
+    return HttpResponseRedirect(nextUrl)
