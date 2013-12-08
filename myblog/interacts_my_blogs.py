@@ -127,3 +127,15 @@ def blog_delete_interact(request, blog_id):
         blog.delete()
     nextUrl = reverse('my_blogs_view')
     return HttpResponseRedirect(nextUrl)
+
+@login_required
+def blog_revoke_interact(request, blog_id):
+    user = request.user
+    blog = Blog.objects.get(pk=blog_id)
+    #return HttpResponse(blog.authors.all())
+    #if user.id in [x.id for author in blog.authors.all()] :
+    if user in blog.authors.all():
+        blog.authors.remove(user)
+        blog.save()
+    nextUrl = reverse('my_blogs_view')
+    return HttpResponseRedirect(nextUrl)

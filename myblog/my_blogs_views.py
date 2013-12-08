@@ -16,6 +16,8 @@ from myblog.models import Blog
 from myblog.models import Post
 from myblog.models import Tag
 from django.db.models import Q
+from myblog import constant
+import html2text
 
 import json
 
@@ -39,20 +41,22 @@ def my_blogs_view(request):
     data_dict['follower_blogs'] = follower_blogs
     return render(request, 'my_blogs.html', data_dict)
 
-def get_post_list_by_id(blog_ids):
-    a_list = []
-    if(blog_ids):
-        posts = Post.objects.filter(blog__id__in=blog_ids).order_by('-create_time')
-        for post in posts:
-            d = {}
-            d['title'] = post.title
-            d['content'] = post.content[:500]
-            d['author_name'] = post.author.first_name
-            d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
-            a_list.append(d)
-    return a_list
+def get_post_list_by_id(blog_ids, current_user_id=None):
+    blogs = Blog.objects.filter(pk__in=blog_ids)
+    return get_post_list(blogs, current_user_id)
+    #a_list = []
+    #if(blog_ids):
+        #posts = Post.objects.filter(blog__id__in=blog_ids).order_by('-create_time')
+        #for post in posts:
+            #d = {}
+            #d['title'] = post.title
+            #d['content'] = post.content[:500]
+            #d['author_name'] = post.author.first_name
+            #d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
+            #a_list.append(d)
+    #return a_list
 
-def get_post_list(blogs):
+def get_post_list(blogs, current_user_id=None):
     a_list = []
     if(blogs):
         posts = Post.objects.filter(blog__in=blogs).order_by('-create_time')
@@ -60,10 +64,14 @@ def get_post_list(blogs):
             d = {}
             d['title'] = post.title
             d['id'] = post.id
-            d['content'] = post.content[:500]
+            content_plain_text = html2text.html2text(post.content)
+            d['content'] = content_plain_text[:constant.BRIEF_LENGTH]
             d['author_name'] = post.author.first_name
             d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
             d['tags'] = list(post.tags.all())
+            if current_user_id and post.author.id==current_user_id:
+                d['is_editable'] = True
+                
             a_list.append(d)
     return a_list
 
@@ -88,7 +96,7 @@ def my_blogs_own_view(request, blog_id=None):
         data_dict['info_title'] = 'Blogs I Own'
         data_dict['blog_id'] = 0
 
-    a_list = get_post_list(blogs)
+    a_list = get_post_list(blogs,current_user_id=user.id)
 
     for blog in blogs:
         authors = blog.authors.all()
@@ -114,12 +122,14 @@ def my_blogs_shared_view(request, blog_id=None):
         blogs = [blog,]
         data_dict['info_title'] = blog.name
         data_dict['owner'] = blog.creator.first_name
+        data_dict['blog_id'] = blog_id
+        data_dict['blog_name'] = blog.name
         
     else:
         blogs = user.author_blogs.filter(~Q(creator=user));
         data_dict['info_title'] = 'Blogs Shared with Me'
 
-    a_list = get_post_list(blogs)
+    a_list = get_post_list(blogs, current_user_id=user.id)
 
     for blog in blogs:
         authors = blog.authors.all()
@@ -142,6 +152,8 @@ def my_blogs_following_view(request, blog_id=None):
         blogs = [blog,]
         data_dict['info_title'] = blog.name
         data_dict['owner'] = blog.creator.first_name
+        data_dict['blog_id'] = blog_id
+        data_dict['blog_name'] = blog.name
         
     else:
         blogs = user.follower_blogs.all();

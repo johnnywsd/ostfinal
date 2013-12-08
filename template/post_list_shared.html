@@ -1,4 +1,24 @@
 {% extends "post_list.html" %}
+
+{% block script%}
+<script type="text/javascript">
+
+  function showRevokeBlogModal(e){
+    var caller = e.target || e.srcElement;
+    var blog_id = $(caller).data('blog-id');
+    var blog_name = $(caller).data('blog-name');
+    console.log(blog_id);
+    var $modal = window.parent.$("#revokeBlogModal");
+    console.log($modal);
+    $modal.find("#blog_name").text(blog_name);
+    $modal.find("#deleteBtn").data("blog-id",blog_id);
+    $modal.modal('show')
+  }
+
+
+</script>
+{%endblock%}
+
 {% block info %}
 <div class="panel panel-warning" style="margin:10px;">
   <div class="panel-heading">
@@ -21,6 +41,18 @@
           <td>{{post_num}}</td>
         </tr>
       </table>
+      {%if blog_id %}
+      <a class="btn btn-danger btn-sm" style="margin-bottom:10px"
+          data-blog-id="{{blog_id}}" 
+          data-blog-name="{{blog_name}}" 
+          onclick="showRevokeBlogModal(event)"
+          href="javascript:void(0)">Revoke Sharing</a>
+      {%endif%}
+      <div class="pull-right">
+        {%if blog_id %}
+        <a href="{%url 'post_add_embedded_view' blog_id=blog_id %}" class="btn btn-success btn-sm" style="margin-bottom:10px">Create New Post</a>
+        {%endif%}
+      </div>
   </div>
 </div>
 

@@ -40,7 +40,7 @@
   <div style="padding:0px 20px">
     <h2>
       <a class="post-title" href="{{post_detail_url}}">{{post.title}}</a>
-      {%if is_editable%}
+      {%if post.is_editable%}
       <small><a class="edit-link" href="{%url 'post_edit_embedded_view' post_id=post.id%}">( Edit ) </a></small>
       <!--<small><a class="edit-link" href="{%url 'post_delete_interact' post_id=post.id%}">( Delete ) </a></small>-->
       <small><a class="edit-link" 

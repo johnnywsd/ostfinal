@@ -24,7 +24,7 @@
  margin-left:25px;
 }
 .item-blog{
-  line-height:3px;
+  line-height:1em;
   font-size:15px;
 }
 .my-panel-heading{
@@ -104,6 +104,19 @@
     var blog_id = $(caller).data('blog-id');
     <!--console.log(blog_id);-->
     var deleteUrl = "{%url 'blog_delete_interact' blog_id=0 %}"
+    deleteUrl = deleteUrl.replace('0', blog_id);
+    <!--console.log(deleteUrl);-->
+
+    <!--window.open("index","content")-->
+    window.open(deleteUrl,"_self")
+    $("#deleteBlogModal").modal('hide');
+  }
+  function revokeBlog(e){
+    var caller = e.target || e.srcElement;
+    <!--console.log(caller);-->
+    var blog_id = $(caller).data('blog-id');
+    <!--console.log(blog_id);-->
+    var deleteUrl = "{%url 'blog_revoke_interact' blog_id=0 %}"
     deleteUrl = deleteUrl.replace('0', blog_id);
     <!--console.log(deleteUrl);-->
 
@@ -309,6 +322,27 @@
 </div><!-- /.modal -->
 
 
+<div class="modal fade" id="revokeBlogModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Revoke Confirm</h4>
+      </div>
+      <div class="modal-body">
+          <p style="font-size:20px; color:red">
+          Are you sure you want to revoke sharing the blog:
+          </p>
+          <p style="font-size:28px;"><span id="blog_name"></span></p>
+        </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <a id="deleteBtn" href="javascript:void(0)" onclick="revokeBlog(event)"
+            class="btn btn-danger" data-blog-id="" >Revoke</a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 {% endblock %}
