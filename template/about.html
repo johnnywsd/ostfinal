@@ -1,15 +1,19 @@
 
 {% extends "bootstrap_base.html" %}
 {% load url from future %}
-
+{%load staticfiles%}
  {% block title %} Update User Info
 {% endblock %} {% block script %}
 <script>
+
 
 </script>
 {% endblock %} {% block script_end_body %}
 <script type="text/javascript">setNavActive("nav_1")</script>
 
+
+
+</script>
  
 {% endblock %} {% block body %}
 
@@ -17,129 +21,9 @@
 <hr />
 <div>
   <iframe src="https://docs.google.com/document/d/1E_moqefvvVai40VyB-dw32v9g0jjgykv1SIE0jodggQ/pub?embedded=true"
-    frameborder="0" width="100%">
+    frameborder="0" width="100%" height="2500px">
   </iframe>
 </div>
-<div>
-    <h4>
-        Instructions
-    </h4>
-
-    <div class="textPanel"><p>
-        <u><span style="font-family: arial, sans-serif; font-size: 13px;" >MyYouTube</span></u></p>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            In this&nbsp;<span class="il" >assignment</span>, you create your own version of a video streaming and sharing application and host it on the cloud. Further, you implement a rating system for your videos and display videos in order of these rating.&nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            Here's a few details about what your application should be like:</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            1. An upload button to upload new videos</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            <span class="il"  style="background-color: rgb(255, 255, 204);" >2</span>. A page that lists all the videos uploaded</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            3. Rating button (dropdown or anything else) for each&nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            4. Delete button to delete video</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            <u>Functionalities</u>:</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            Upload:</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            When the user chooses to upload a new video, it should be stored using an Amazon S3 bucket. Note, this bucket may be created manually or using code (If you create this using code, you will get an extra credit of 25 points).</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            Note, if a file other than compatible video files are uploaded, it should throw an error message.</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            You should also have an option to delete the videos. On deleting, the page should refresh and the videos should no longer show up.</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            List:</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            A page should list all available videos from the S3 bucket and updates them on the page. (Example: There are 4 videos on my page. If I upload a 5th video using the Upload button and click on the List button, the new video will be added to the page and there will be 5 videos on my webpage now.)</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            Stream:</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            The users should be able to watch the videos on the browser. You may use the sample code for JWPlayer to stream the video.</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            However, the videos stored in S3 must be distributed using CloudFront, which is the content distribution server. You may configure the CloudFront server manually or using code. Note, you will have to create both distributions, Streaming (for Flash streaming) and Downloading (for HTML5 streaming). (If you create this using code, you will get an extra credit of 20 points).</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            Rating:</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            You need to use the Amaazon RDS database to store details about the video: name, upload timestamp and a cumulative rating (ie, they should be updated and averaged everytime a user rates it). These ratings should be updated everytime a new user rates it. Note, you can allow the same user to rate multiple times to avoid storing any session/cookies data. Current rating must also be displayed next to every video. The RDS can be created and configured manually but must be updated using code.</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            Videos must be listed in the order of ratings everytime the page is refreshed.</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            <u>Requirements</u>:<br/>
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            S3 bucket stores the uploaded videos.</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            EC2 instance acts as web server (Application is hosted on a AWS server)</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            CloudFront - Content Distribution Network (CDN)</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            RDS - database for storing name of video and ratings</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            *Approach* -- One-time setup --</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            Create an S3 bucket using AWS API.&nbsp;<a  href="http://aws.amazon.com/s3/"  target="_blank" >http://aws.amazon.com/s3/</a></div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            Create an EC2 instance using API and host your application on it.&nbsp;<a  href="http://aws.amazon.com/ec2/"  target="_blank" >http://aws.amazon.com/ec2/</a></div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            Create a Cloudfront Distribution and seamlessly integrate it with your bucket and EC2 instance using the API.&nbsp;<a  href="http://aws.amazon.com/cloudfront/"  target="_blank" >http://aws.amazon.com/&lt;wbr&gt;cloudfront/&lt;/wbr&gt;</a><br/>
-            Create a RDS database.&nbsp;<a  href="http://aws.amazon.com/rds/"  target="_blank" >http://aws.amazon.com/rds/</a></div>
-        <p>
-        &nbsp;</p>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            Bonus points:</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            &nbsp;</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            20 points extra if you have phone based video upload to S3.</div>
-        <div style="font-family: arial, sans-serif; font-size: 13px;" >
-            20 further points extra if you handle live streaming.</div>
-        <p>
-        &nbsp;</p>
-        <p>
-        &nbsp;</p>
-    </div>
-</div>
-
-<h1>Release Note:  </h1>
-<hr />
-<div>
-	<h3>2013-11-11</h3>
-	<ul>
-	  <li>First Release</li>
-	</ul>
-</div>
-
-
 
 {% endblock %}
 
