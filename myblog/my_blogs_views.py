@@ -44,18 +44,7 @@ def my_blogs_view(request):
 def get_post_list_by_id(blog_ids, current_user_id=None):
     blogs = Blog.objects.filter(pk__in=blog_ids)
     return get_post_list(blogs, current_user_id)
-    #a_list = []
-    #if(blog_ids):
-        #posts = Post.objects.filter(blog__id__in=blog_ids).order_by('-create_time')
-        #for post in posts:
-            #d = {}
-            #d['title'] = post.title
-            #d['content'] = post.content[:500]
-            #d['author_name'] = post.author.first_name
-            #d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
-            #a_list.append(d)
-    #return a_list
-
+    
 def get_post_list(blogs, current_user_id=None):
     a_list = []
     if(blogs):

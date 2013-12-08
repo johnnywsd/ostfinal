@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.http import Http404
 from myblog.models import Blog
+from myblog.models import Post
 from django.db.models import Q
 
 def home_view(request):
@@ -54,3 +55,9 @@ def my_blogs_view(request):
 def test_page_view(request):
     data_dict = {}
     return render(request, 'long.html', data_dict)
+
+def latest_post_list_view(request):
+    posts = Post.objects.all().order_by('create_time')
+    data_dict = {}
+    data_dict['posts'] = posts
+    return render(request, 'post_list_home-test.html', data_dict)

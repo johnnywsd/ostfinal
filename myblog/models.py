@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 import os
 import uuid
 from django.core.files.storage import default_storage as s3_storage
+from myblog import constant
+import html2text
 
 class Blog(models.Model):
     id = models.AutoField(primary_key=True)
@@ -37,6 +39,14 @@ class Post(models.Model):
 
     def __unicode__(self):
         return self.title
+    
+    def get_create_date_str(self):
+        return self.create_time.strftime(constant.DATE_FORMAT)
+
+    def get_content_brief(self):
+        content_plain_text = html2text.html2text(self.content)
+        ret = content_plain_text[:constant.BRIEF_LENGTH]
+        return ret 
 
 
 class Comment(models.Model):

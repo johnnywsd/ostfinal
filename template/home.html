@@ -17,6 +17,11 @@
     width: 100%;
     height: 100%;
 }
+
+.tab-title{
+  font-size: 14px;
+  font-weight:bold;
+}
 </style>
 <script> </script>
 {% endblock %} 
@@ -24,22 +29,16 @@
 {% block script_end_body %}
 <script type="text/javascript">setNavActive("nav_0")</script>
 <script src="http://getbootstrap.com/docs-assets/js/holder.js"></script>
-<script src="{% static 'plugins/raty/lib/jquery.raty.min.js' %}"></script>
 
 <script>
-{% for item in video_info_list %}
-$(document).ready(function(){
-    $("#rating_{{item.video_id}}").raty({
-      path     : "{% static 'plugins/raty/lib/img' %}",
-      starHalf : 'star-half.png',
-      starOff  : 'star-off.png',
-      starOn   : 'star-on.png',
-      score    : '{{ item.rating }}',
-      noRatedMsg: 'Not rated yet!',
-      readOnly : true
-    });
-});
-{% endfor %}
+  $(document).ready(function(){
+      $("li.tab-title> a").click(function(){
+          //$(this).addClass('active');
+          $("li.tab-title").removeClass('active');
+          $(this).parent("li.tab-title").addClass('active');
+        });
+      });
+
 </script>
 {% endblock %}
 
@@ -54,6 +53,15 @@ $(document).ready(function(){
     <div class="pull-right"><p><a href="{% url 'sign_up' %}" class="btn btn-success btn-lg pull-right" role="button">Sign up</a></p></div>
     <br>
     {% endif %}
+</div>
+
+<ul class="nav nav-tabs">
+  <li class="active tab-title"><a href="javascript:void(0)">Latest Posts</a></li>
+  <li class="tab-title"><a href="javascript:void(0)" >Hottest Blogs</a></li>
+</ul>
+<div class="col-sm-12 col-md-12">
+  <iframe frameborder=0 width="100%">
+  </iframe>
 </div>
 
 <h1>Hottest Posts </h1>

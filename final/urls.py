@@ -31,4 +31,7 @@ urlpatterns = patterns('',
 
     url(r'^rss/(?P<blog_id>\d+)/$', RssFeed(),
         name='rss'),
+
+    url(r'^latest_post_list/$', 'myblog.views.latest_post_list_view',
+        name='latest_post_list_view'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
