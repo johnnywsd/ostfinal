@@ -1,4 +1,5 @@
 {% load url from future %}
+{% load pagination_tags %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -35,6 +36,8 @@
 
   {% endblock %}
 
+  {%with num_per_page=num_per_page|default:10 %}
+  {% autopaginate posts num_per_page %}
   {%for post in posts%}
   {%url 'post_detail_embedded_view' post.id as post_detail_url%}
   <div style="padding:0px 20px">
@@ -50,11 +53,10 @@
           href="javascript:void(0)"> ( Delete ) </a></small>
       {%endif%}
     </h2>
-    <small>post on {{post.create_date}}, by <strong>{{post.author_name}}</strong></small>
+    <small>post on {{post.get_create_date_str}}, by <strong>{{post.get_author_full_name}}</strong></small>
     <!--<br>-->
-    <p class="post-content">{{post.content}}<span class="continue-link"><a href="{{post_detail_url}}">Continue Reading ...</a></span></p>
     <p><small>Post in 
-      {%for tag in post.tags%}
+      {%for tag in post.tags.all%}
         {%if forloop.last%}
           <a href="#">{{tag.name}}.</a>
         {%else%}
@@ -62,10 +64,29 @@
         {%endif%}
       {%endfor%}
     </small></p>
+    <p class="post-content">{{post.get_content_brief}}<span class="continue-link"><a href="{{post_detail_url}}">Continue Reading ...</a></span></p>
     <hr style="width:100%"/>
   </div>
   {%endfor%}
 
+  <div style="text-align:center">
+  {% paginate %}
+  </div>
+
+  {%endwith%}
+  <!--<div style="text-align:center">-->
+<!--{% paginate %}-->
+    <!--<ul class="pagination">-->
+      <!--<li class="disabled"><a href="#">&laquo;</a></li>-->
+      <!--<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>-->
+      <!--<li ><a href="#">2 <span class="sr-only">(current)</span></a></li>-->
+      <!--<li ><a href="#">3 <span class="sr-only">(current)</span></a></li>-->
+      <!--<li ><a href="#">4 <span class="sr-only">(current)</span></a></li>-->
+      <!--<li ><a href="#">5 <span class="sr-only">(current)</span></a></li>-->
+      <!--<li ><a href="#">&raquo;</a></li>-->
+    <!--</ul>-->
+
+<!--</div>-->
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 

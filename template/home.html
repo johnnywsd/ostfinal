@@ -3,7 +3,7 @@
 {% load url from future %}
 {% load staticfiles %}
 
- {% block title %} Update User Info
+ {% block title %} OST Blog
  {% endblock %}
 
 {% block script %}
@@ -22,6 +22,9 @@
   font-size: 14px;
   font-weight:bold;
 }
+.tab-content-style{
+  margin:0px;
+}
 </style>
 <script> </script>
 {% endblock %} 
@@ -30,7 +33,36 @@
 <script type="text/javascript">setNavActive("nav_0")</script>
 <script src="http://getbootstrap.com/docs-assets/js/holder.js"></script>
 
+<script type="text/javascript" src="{%static 'myblog/plugins/jquery-iframe-auto-height/jquery.browser.js' %}">
+</script>
+
+<script type="text/javascript" src="{%static 'myblog/plugins/jquery-iframe-auto-height/jquery.iframe-auto-height.js' %}">
+</script>
+
 <script>
+  function showLatestPosts(){
+     $("#tab-content").load("{%url 'latest_post_list_view'%}")
+  }
+  function showHottestBlogs(){
+     <!--$("#tab-content").load("{%url 'latest_post_list_view'%}")-->
+     $("#tab-content").load("http://www.baidu.com")
+  }
+
+  var windowResizeFunction = function (resizeFunction, iframe) {
+    $(window).resize(function () {
+      console.debug("window resized - firing resizeHeight on iframe");
+      resizeFunction(iframe);
+    });
+  };
+  // fire iframe resize when a link is clicked
+  var clickFunction = function (resizeFunction, iframe) {
+    $('a').click(function () {
+      $(iframe).contents().find('body').html(''); // clear content of iframe
+      console.debug("link clicked - firing resizeHeight on iframe");
+      resizeFunction(iframe);
+    });
+  };
+
   $(document).ready(function(){
       $("li.tab-title> a").click(function(){
           //$(this).addClass('active');
@@ -39,11 +71,23 @@
         });
       });
 
+  $(document).ready(function(){
+    $('#tab-content').iframeAutoHeight({debug: true, 
+           resetToMinHeight: true,
+           <!--minHeight: 800,-->
+           triggerFunctions: [
+              windowResizeFunction,
+              <!--clickFunction-->
+            ]
+        });    
+     });
+
 </script>
 {% endblock %}
 
 {% block body %}
 
+<div class="row">
 <div class="jumbotron">
     <h1>OST Blog</h1>
     <p>This is the final project of Open Source Tools, Fall 2013, NYU. It use AWS EC2 as server, RDS as it database, S3 as it storage for videos and other files. It also uses CloudFront to distribute its storage. </p>
@@ -54,49 +98,28 @@
     <br>
     {% endif %}
 </div>
-
-<ul class="nav nav-tabs">
-  <li class="active tab-title"><a href="javascript:void(0)">Latest Posts</a></li>
-  <li class="tab-title"><a href="javascript:void(0)" >Hottest Blogs</a></li>
-</ul>
-<div class="col-sm-12 col-md-12">
-  <iframe frameborder=0 width="100%">
-  </iframe>
 </div>
 
-<h1>Hottest Posts </h1>
-<hr />
+<div class="row"> 
+  <ul class="nav nav-tabs">
+    <!--<li class="active tab-title"><a href="javascript:void(0)" -->
+      <!--onclick="showLatestPosts()">Latest Posts</a></li>-->
+    <!--<li class="tab-title"><a href="javascript:void(0)"-->
+      <!--onclick="showHottestBlogs()">Hottest Blogs</a></li>-->
+    <li class="active tab-title"><a href="{%url 'latest_post_list_view'%}" 
+      target='tab-content'>Latest Posts</a></li>
+    <li class="active tab-title"><a href="{%url 'latest_post_list_view'%}" 
+      target='tab-content'>Hottest Blogs</a></li>
+  </ul>
+</div>
 
-<div class="col-sm-12 col-md-12">
-  {% for item in video_info_list %}
-  <div class="row">
-      <!--<div class="col-sm-4 col-md-4" style="width:auto; max-height:200px">-->
-      <div class="col-sm-4 col-md-4" style="max-height:200px">
-        <a href="{% url 'theatre_view' item.video_id %}" class="thumbnail" style="max-width:300px">
-          {% if item.thumbnail_url %}
-          <div class="img">
-              <img src="{{ item.thumbnail_url }}" class="img" >
-          </div> 
-          {% else %}
-          <img data-src="holder.js/300x200">
-          {% endif %}
-        </a>
-      </div>
-      <!--<div class="col-sm-4 col-sm-offset-5 col-md-4 col-md-offset-5" >-->
-      <div class="col-sm-8 col-md-8 " >
-        <h3>{{ item.title }}</h3>
-        <p>by <a href="">{{ item.uploader }}</a></p>
-        <p><small>Published on {{item.published_date}}</small></p>
-        <p><span id="rating_{{item.video_id}}"></span><small>({{item.num_votes}} votes)</small></p>
-        <p> <small>{{ item.description }}</small> </p>
-      </div>
+<div class="row">
+  <div class="panel panel-default">
+    <iframe id="tab-content" src="{%url 'latest_post_list_view'%}" frameborder=0 width="100%" >
+    </iframe>
+    <!--<div id="tab-content">-->
   </div>
-  <hr style="color:grey">
-  {% endfor %}   
-  
 </div>
-
-
 
 {% endblock %}
 

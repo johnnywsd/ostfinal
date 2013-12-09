@@ -15,6 +15,8 @@ from django.http import Http404
 from myblog.models import Blog
 from myblog.models import Post
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from myblog import constant
 
 def home_view(request):
     data_dict = {}
@@ -56,8 +58,53 @@ def test_page_view(request):
     data_dict = {}
     return render(request, 'long.html', data_dict)
 
-def latest_post_list_view(request):
-    posts = Post.objects.all().order_by('create_time')
+def get_post_list(blogs, current_user_id=None):
+    a_list = []
+    if(blogs):
+        posts = Post.objects.filter(blog__in=blogs).order_by('-create_time')
+        for post in posts:
+            d = {}
+            d['title'] = post.title
+            d['id'] = post.id
+            content_plain_text = html2text.html2text(post.content)
+            d['content'] = content_plain_text[:constant.BRIEF_LENGTH]
+            d['author_name'] = post.author.first_name
+            d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
+            d['tags'] = list(post.tags.all())
+            if current_user_id and post.author.id==current_user_id:
+                d['is_editable'] = True
+                
+            a_list.append(d)
+    return a_list
+
+def latest_post_list_view_bak(request):
     data_dict = {}
+    post_list = Post.objects.all().order_by('-create_time')
+    #for post in posts:
+        #if current_user_id and post.author.id==current_user_id:
+            #post.is_editable = True
+
+    paginator = Paginator(post_list, constant.NUM_PER_PAGE )
+    page = request.GET.get('page')
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
     data_dict['posts'] = posts
-    return render(request, 'post_list_home-test.html', data_dict)
+    return render(request, 'post_list.html', data_dict)
+
+def latest_post_list_view(request):
+    data_dict = {}
+    post_list = Post.objects.all().order_by('-create_time')
+    for post in post_list:
+        if post.author.id == request.user.id:
+            post.is_editable = True
+
+    data_dict['posts'] = post_list
+    data_dict['num_per_page'] = constant.NUM_PER_PAGE
+    data_dict['request'] = request #must have
+    return render(request, 'post_list.html', data_dict)

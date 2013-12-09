@@ -48,6 +48,8 @@ class Post(models.Model):
         ret = content_plain_text[:constant.BRIEF_LENGTH]
         return ret 
 
+    def get_author_full_name(self):
+        return '%s %s' % (self.author.first_name, self.author.last_name)
 
 class Comment(models.Model):
     id = models.AutoField(primary_key=True)

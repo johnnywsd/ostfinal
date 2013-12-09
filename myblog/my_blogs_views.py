@@ -20,7 +20,7 @@ from myblog import constant
 import html2text
 
 import json
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @login_required
 def my_blogs_view(request):
@@ -45,7 +45,7 @@ def get_post_list_by_id(blog_ids, current_user_id=None):
     blogs = Blog.objects.filter(pk__in=blog_ids)
     return get_post_list(blogs, current_user_id)
     
-def get_post_list(blogs, current_user_id=None):
+def get_post_list_bak(blogs, current_user_id=None):
     a_list = []
     if(blogs):
         posts = Post.objects.filter(blog__in=blogs).order_by('-create_time')
@@ -63,6 +63,23 @@ def get_post_list(blogs, current_user_id=None):
                 
             a_list.append(d)
     return a_list
+
+def get_post_list(blogs, current_user_id=None):
+    a_list = []
+    if(blogs):
+        posts = Post.objects.filter(blog__in=blogs).order_by('-create_time')
+        for post in posts:
+            #d = {}
+            #content_plain_text = html2text.html2text(post.content)
+            #d['content'] = content_plain_text[:constant.BRIEF_LENGTH]
+            #d['author_name'] = post.author.first_name
+            #d['create_date'] = post.create_time.strftime(settings.DATE_FORMAT)
+            #d['tags'] = list(post.tags.all())
+            if current_user_id and post.author.id==current_user_id:
+                #d['is_editable'] = True
+                post.is_editable = True
+                
+    return posts
 
 @login_required
 def my_blogs_own_view(request, blog_id=None):
@@ -97,7 +114,9 @@ def my_blogs_own_view(request, blog_id=None):
     data_dict['author_ids'] = ', '.join(author_ids_set)
     data_dict['post_num'] = len(a_list)
     data_dict['posts'] = a_list
-    data_dict['is_editable'] = True
+    #data_dict['is_editable'] = True
+    data_dict['num_per_page'] = constant.NUM_PER_PAGE
+    data_dict['request'] = request
     return render(request, 'post_list_own.html', data_dict)
 
 @login_required
@@ -128,6 +147,8 @@ def my_blogs_shared_view(request, blog_id=None):
     data_dict['author_names'] = ', '.join(author_names_set)
     data_dict['post_num'] = len(a_list)
     data_dict['posts'] = a_list
+    data_dict['num_per_page'] = constant.NUM_PER_PAGE
+    data_dict['request'] = request
     return render(request, 'post_list_shared.html', data_dict)
 
 @login_required
@@ -158,9 +179,11 @@ def my_blogs_following_view(request, blog_id=None):
     data_dict['author_names'] = ', '.join(author_names_set)
     data_dict['post_num'] = len(a_list)
     data_dict['posts'] = a_list
+    data_dict['num_per_page'] = constant.NUM_PER_PAGE
+    data_dict['request'] = request
     return render(request, 'post_list_following.html', data_dict)
 
-@login_required
+#@login_required
 def post_detail_embedded_view(request, post_id=None):
     data_dict = {}
     a_list = []

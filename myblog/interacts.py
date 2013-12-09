@@ -77,7 +77,9 @@ def login_user(request):
 @login_required
 def logout_user(request):
     logout(request)
-    return redirect(settings.LOGIN_URL)
+    #nextUrl = settings.LOGIN_URL
+    nextUrl = reverse('home') 
+    return redirect(nextUrl)
 
 @login_required
 def get_users_ajax(request):

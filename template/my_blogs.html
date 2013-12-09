@@ -74,8 +74,30 @@
         $("div.my-panel-heading").parent('panel').addClass('active');
       });
 
+  var windowResizeFunction = function (resizeFunction, iframe) {
+    $(window).resize(function () {
+      console.debug("window resized - firing resizeHeight on iframe");
+      resizeFunction(iframe);
+    });
+  };
+  // fire iframe resize when a link is clicked
+  var clickFunction = function (resizeFunction, iframe) {
+    $('a').click(function () {
+      $(iframe).contents().find('body').html(''); // clear content of iframe
+      console.debug("link clicked - firing resizeHeight on iframe");
+      resizeFunction(iframe);
+    });
+  };
+
   $(document).ready(function(){
-    $('iframe').iframeAutoHeight({debug: true, resetToMinHeight: true, minHeight: 800});    
+    $('iframe').iframeAutoHeight({debug: true, 
+           resetToMinHeight: true,
+           minHeight: 800,
+           triggerFunctions: [
+              windowResizeFunction,
+              clickFunction
+            ]
+        });    
    });
 
   function deletePost(e){

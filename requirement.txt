@@ -4,6 +4,7 @@ PIL==1.1.7
 South==0.8.4
 argparse==1.2.1
 boto==2.19.0
+django-pagination-bootstrap==1.0.5
 django-storages==1.1.8
 wsgiref==0.1.2
 yolk==0.4.3
