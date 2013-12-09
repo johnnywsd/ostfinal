@@ -19,6 +19,7 @@ from myforms import BlogForm
 from myblog.models import Blog
 from myblog.models import Tag
 from myblog import constant
+from myblog import utils
 
 
 @login_required
@@ -51,7 +52,7 @@ def post_edit_interact(request, blog_id=None, post_id=None):
             if blog_id:
                 post.blog = Blog.objects.get(pk=blog_id)
             post.title = title
-            post.content = content
+            post.content = utils.plain2link(content)
             post.author = user
             post.save()
             post.tags = tags

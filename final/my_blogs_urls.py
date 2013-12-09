@@ -76,4 +76,7 @@ urlpatterns = patterns('',
         'myblog.interacts_my_blogs.blog_revoke_interact',
         name='blog_revoke_interact'),
 
+    url(r'^image_upload_interact/$',
+        'myblog.interacts_file.img_upload_interact',
+        name='image_upload_interact'),
 )

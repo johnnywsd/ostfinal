@@ -33,7 +33,7 @@
   <script type="text/javascript">
     $(document).ready(function(){
         CKEDITOR.replace( 'post_content' , {
-            filebrowserUploadUrl: '/uploader/upload.php?type=Files',
+            filebrowserUploadUrl: "{%url 'image_upload_interact'%}",
             height:'600'
           });
 
@@ -57,6 +57,9 @@
         {%if blog_id%}
         $("#blog").val("{{blog_id}}").trigger("change");
         {%endif%}
+
+        $('meta[name="csrf-param"]').attr('content')
+        $('meta[name="csrf-token"]').attr('content')
       })
   </script>
 
