@@ -123,8 +123,8 @@ footer {
             <ul class="nav navbar-nav">
                 <li id="nav_0"><a href="{% url 'home' %}">Home</a></li>
                 {% if user.is_authenticated %}
-                <li id="nav_3"><a href="">Upload Video</a></li>
                 <li id="nav_4"><a href="{%url 'my_blogs_view'%}">My Blogs</a></li>
+                <li id="nav_3"><a href="">Search</a></li>
                 {% endif %}
                 <li id="nav_1"><a href="{% url 'about'%}">About</a></li>
                 <li id="nav_2"><a href="#contact">Contact</a></li>
