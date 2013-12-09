@@ -33,7 +33,7 @@ class Post(models.Model):
     title = models.CharField(max_length=400)
     content = models.TextField(blank=True, null=True)
     #comments = models.OneToManyField(Comment)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag,  related_name='posts')
     create_time = models.DateTimeField(auto_now_add=True)
     modify_time = models.DateTimeField(auto_now=True)
 

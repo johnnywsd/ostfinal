@@ -34,4 +34,11 @@ urlpatterns = patterns('',
 
     url(r'^latest_post_list/$', 'myblog.views.latest_post_list_view',
         name='latest_post_list_view'),
+
+    url(r'^tag_post_list/(?P<tag_id>\d+)/$', 'myblog.views.tag_post_list_view',
+        name='tag_post_list_view'),
+    url(r'^tag_post_list/(?P<tag_id>\d+)/(?P<blog_ids>[0-9,]*)/$',
+        'myblog.views.tag_post_list_view',
+        name='tag_post_list_view'),
+
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

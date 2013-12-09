@@ -95,12 +95,14 @@ def my_blogs_own_view(request, blog_id=None):
         data_dict['info_title'] = blog.name
         data_dict['owner'] = blog.creator.first_name
         data_dict['blog_id'] = blog_id
+        data_dict['blog_ids'] = blog_id
         data_dict['blog_name'] = blog.name
         
     else:
         blogs = user.creator_blogs.all();
         data_dict['info_title'] = 'Blogs I Own'
         data_dict['blog_id'] = 0
+        data_dict['blog_ids'] = ','.join([str(x.id) for x in blogs])
 
     a_list = get_post_list(blogs,current_user_id=user.id)
 
@@ -131,11 +133,13 @@ def my_blogs_shared_view(request, blog_id=None):
         data_dict['info_title'] = blog.name
         data_dict['owner'] = blog.creator.first_name
         data_dict['blog_id'] = blog_id
+        data_dict['blog_ids'] = blog_id
         data_dict['blog_name'] = blog.name
         
     else:
         blogs = user.author_blogs.filter(~Q(creator=user));
         data_dict['info_title'] = 'Blogs Shared with Me'
+        data_dict['blog_ids'] = ','.join([str(x.id) for x in blogs])
 
     a_list = get_post_list(blogs, current_user_id=user.id)
 
@@ -163,11 +167,13 @@ def my_blogs_following_view(request, blog_id=None):
         data_dict['info_title'] = blog.name
         data_dict['owner'] = blog.creator.first_name
         data_dict['blog_id'] = blog_id
+        data_dict['blog_ids'] = blog_id
         data_dict['blog_name'] = blog.name
         
     else:
         blogs = user.follower_blogs.all();
         data_dict['info_title'] = 'Blogs I Following'
+        data_dict['blog_ids'] = ','.join([str(x.id) for x in blogs])
 
     a_list = get_post_list(blogs)
 

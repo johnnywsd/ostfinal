@@ -26,18 +26,20 @@
   margin:0px;
 }
 </style>
-<script> </script>
-{% endblock %} 
-
-{% block script_end_body %}
-<script type="text/javascript">setNavActive("nav_0")</script>
-<script src="http://getbootstrap.com/docs-assets/js/holder.js"></script>
 
 <script type="text/javascript" src="{%static 'myblog/plugins/jquery-iframe-auto-height/jquery.browser.js' %}">
 </script>
 
 <script type="text/javascript" src="{%static 'myblog/plugins/jquery-iframe-auto-height/jquery.iframe-auto-height.js' %}">
 </script>
+
+{% endblock %} 
+
+
+
+{% block script_end_body %}
+<script type="text/javascript">setNavActive("nav_0")</script>
+
 
 <script>
   function showLatestPosts(){

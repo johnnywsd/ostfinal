@@ -14,6 +14,7 @@ from django.conf import settings
 from django.http import Http404
 from myblog.models import Blog
 from myblog.models import Post
+from myblog.models import Tag
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myblog import constant
@@ -104,6 +105,36 @@ def latest_post_list_view(request):
         if post.author.id == request.user.id:
             post.is_editable = True
 
+    data_dict['posts'] = post_list
+    data_dict['num_per_page'] = constant.NUM_PER_PAGE
+    data_dict['request'] = request #must have
+    return render(request, 'post_list.html', data_dict)
+
+def tag_post_list_view(request, tag_id=None, blog_ids=None):
+    data_dict = {}
+    tag = Tag.objects.get(pk=tag_id)
+
+    #blog_ids_str = blog_ids
+    #data_dict['blog_ids'] = blog_ids_str
+    if blog_ids:
+        blog_ids_str = blog_ids
+        data_dict['blog_ids'] = blog_ids_str
+        blog_ids = blog_ids_str.split(',') 
+        blogs = Blog.objects.filter(pk__in=blog_ids)
+        blog_names = ', '.join([x.name for x in blogs])
+        info_of_list = 'Posts with tag <strong>%s</strong> in\
+                blog <strong>%s</strong> ' \
+                % (tag.name, blog_names)
+        post_list = tag.posts.filter(blog__in=blogs).order_by('-create_time')
+    else:
+        info_of_list = 'All Posts with tag: <strong>%s</strong>' % tag.name
+        post_list = tag.posts.all().order_by('-create_time')
+
+    for post in post_list:
+        if post.author.id == request.user.id:
+            post.is_editable = True
+
+    data_dict['info_of_list'] = info_of_list
     data_dict['posts'] = post_list
     data_dict['num_per_page'] = constant.NUM_PER_PAGE
     data_dict['request'] = request #must have
