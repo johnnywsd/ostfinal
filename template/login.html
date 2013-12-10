@@ -83,10 +83,13 @@ body {
     <form class="form-signin" action="{% url 'login_interact' %}" method="post">
 		{% csrf_token %}
 			<h2 class="form-signin-heading">Please sign in</h2>
-			<input type="hidden" id="next" name="next" value=""></input>
+			<input type="hidden" id="next" name="next" value="" ></input>
 			<input type="text" class="form-control"
-				placeholder="Username" name="username"> <input type="password"
-				class="form-control" placeholder="Password" name="password"> <label
+      placeholder="Username" name="username" required> 
+      <input type="password"
+      class="form-control" placeholder="Password" 
+      name="password" required> 
+      <label
 				class="checkbox">
 				<input type="checkbox" value="remember-me">
 				Remember me
