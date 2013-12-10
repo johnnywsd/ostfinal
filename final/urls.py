@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'final.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
+    url(r'^$', 'myblog.views.home_view', name='home'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^index$', 'myblog.views.home_view', name='home'),
     url(r'^sign_up$', 'myblog.views.sign_up_view', name='sign_up'),
