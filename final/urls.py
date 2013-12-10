@@ -43,4 +43,7 @@ urlpatterns = patterns('',
 
     url(r'^ckeditor/', include('ckeditor.urls')),
 
+    url(r'^get_tags_ajax$', 'myblog.interacts.get_tags_ajax',
+        name='get_tags_ajax'),
+
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

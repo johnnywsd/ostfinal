@@ -16,6 +16,7 @@ from django.conf import settings
 from django.http import Http404
 import json
 from myblog import constant
+from myblog.models import Tag
 
 
 def sign_up_interact(request):
@@ -86,7 +87,8 @@ def get_users_ajax(request):
     q = request.GET.get('q')
 #Example: {results:[{id:1, text:'Red'},{id:2, text:'Blue'}], more:true}
     user_emails = [ {'id':x.id, 'text': x.email } 
-            for x in User.objects.filter(email__icontains=q)[0:5] ] 
+            for x in User.objects.filter(
+                email__icontains=q)[:constant.DROPDWON_ITEM_NUM] ] 
 
     data_dict = {'results': user_emails}
     data_json = json.dumps(data_dict)
@@ -106,3 +108,15 @@ def get_users_by_ids_ajax(request):
         
     return HttpResponse(data_json, mimetype='application/json')
 
+@login_required
+def get_tags_ajax(request):
+    q = request.GET.get('q')
+#Example: {results:[{id:1, text:'Red'},{id:2, text:'Blue'}], more:true}
+    tags = [ {'id':x.name, 'text': x.name } 
+            for x in Tag.objects.filter(
+                name__icontains=q)[:constant.DROPDWON_ITEM_NUM] ] 
+
+    data_dict = {'results': tags}
+    data_json = json.dumps(data_dict)
+        
+    return HttpResponse(data_json, mimetype='application/json')

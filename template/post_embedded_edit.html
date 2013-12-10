@@ -47,10 +47,32 @@
 
         console.log(tags);
         $("#tags").select2({
-          <!--tags:["red", "green", "blue"],-->
+          tags:["red", "green", "blue"],
           <!--tags: [{1:"red"}],-->
-          tags: all_tags,
+          <!--tags: all_tags,-->
           tokenSeparators: [",", " "],
+          minimumInputLength: 1,
+          quietMillis : 200,
+          ajax: {
+              url : "{%url 'get_tags_ajax'%}",
+              dataType: "json",
+              data: function (term, page) {
+                    return {
+                              q: term // search term
+                          };
+                    },
+              results: function (data, page) {
+                      return { results: data.results };
+                      <!--return  data ;-->
+                        }
+                      },
+            initSelection: function(element, callback) {
+                  var data = [];
+                  $(element.val().split(",")).each(function(){
+                      data.push({id:this, text:this})
+                    });
+                  callback(data)
+              },
           });
         $("#tags").val(tags).trigger("change");
 
