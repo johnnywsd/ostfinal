@@ -50,7 +50,7 @@
           tags:["red", "green", "blue"],
           <!--tags: [{1:"red"}],-->
           <!--tags: all_tags,-->
-          tokenSeparators: [",", " "],
+          tokenSeparators: [","],
           minimumInputLength: 1,
           quietMillis : 200,
           ajax: {
@@ -67,12 +67,15 @@
                         }
                       },
             initSelection: function(element, callback) {
-                  var data = [];
-                  $(element.val().split(",")).each(function(){
-                      data.push({id:this, text:this})
-                    });
-                  callback(data)
-              },
+                              var data = [];
+                              $(element.val().split(",")).each(function(){
+                                  data.push({id:this, text:this})
+                                });
+                              callback(data)
+                           },
+            createSearchChoice: function(term){
+                      return {id:term, text: term}
+                    },
           });
         $("#tags").val(tags).trigger("change");
 
