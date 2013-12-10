@@ -33,7 +33,8 @@
   <script type="text/javascript">
     $(document).ready(function(){
         CKEDITOR.replace( 'post_content' , {
-            filebrowserUploadUrl: "{%url 'image_upload_interact'%}",
+            filebrowserUploadUrl: "{%url 'ckeditor_upload'%}",
+            filebrowserBrowseUrl: "{%url 'ckeditor_browse'%}",
             height:'600'
           });
 

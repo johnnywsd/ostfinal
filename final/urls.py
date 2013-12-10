@@ -41,4 +41,6 @@ urlpatterns = patterns('',
         'myblog.views.tag_post_list_view',
         name='tag_post_list_view'),
 
+    url(r'^ckeditor/', include('ckeditor.urls')),
+
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

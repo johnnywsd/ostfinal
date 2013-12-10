@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'myblog',
     'south',
     'pagination_bootstrap',
+    'ckeditor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,13 +91,27 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+STATIC_ROOT = '/var/www/mystatic/ostfinal/static'
+MEDIA_ROOT = '/var/www/mystatic/ostfinal/media'
 
 STATICFILES_DIRS = (
     #os.path.join(BASE_DIR, "static"),
 )
 
-STATIC_ROOT = '/var/www/mystatic/ostfinal/static'
-
+#django-ckeditor
+#CKEDITOR_UPLOAD_PATH = "/home/johnny/tmp/OST/" #Local
+CKEDITOR_UPLOAD_PATH = "imgs/"
+CKEDITOR_RESTRICT_BY_USER = True
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',
+        'height': 600,
+    },
+}
+CKEDITOR_IMAGE_BACKEND = "pillow"
+MEDIA_CACHE_BUSTER = '_cached'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 TEMPLATE_DIRS=( 
         os.path.join(BASE_DIR,'template'),
