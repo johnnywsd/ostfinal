@@ -82,7 +82,6 @@ def logout_user(request):
     nextUrl = reverse('home') 
     return redirect(nextUrl)
 
-@login_required
 def get_users_ajax(request):
     q = request.GET.get('q')
 #Example: {results:[{id:1, text:'Red'},{id:2, text:'Blue'}], more:true}
@@ -95,7 +94,6 @@ def get_users_ajax(request):
         
     return HttpResponse(data_json, mimetype='application/json')
 
-@login_required
 def get_users_by_ids_ajax(request):
     q = request.GET.get('q')
     q = q.split(',')
@@ -108,7 +106,6 @@ def get_users_by_ids_ajax(request):
         
     return HttpResponse(data_json, mimetype='application/json')
 
-@login_required
 def get_tags_ajax(request):
     q = request.GET.get('q')
 #Example: {results:[{id:1, text:'Red'},{id:2, text:'Blue'}], more:true}
@@ -120,3 +117,28 @@ def get_tags_ajax(request):
     data_json = json.dumps(data_dict)
         
     return HttpResponse(data_json, mimetype='application/json')
+
+@login_required
+def toggle_follow_ajax(request):
+    user = request.user
+    data_dict = {}
+    blog_id = request.GET.get('blog_id')
+    user_id = request.GET.get('user_id')
+    if user_id:
+        user_id = int(user_id)
+    if user.id == user_id and blog_id:
+        blog = Blog.objects.get(pk=blog_id)
+        if user in blog.followers.all():
+            blog.followers.remove(user)
+            blog.save()
+            is_followed = 0
+        else:
+            blog.followers.add(user)
+            blog.save()
+            is_followed = 1
+        data_dict['is_followed'] = is_followed
+        data_json = json.dumps(data_dict)
+        return HttpResponse(data_json, mimetype='application/json')
+    else: 
+        return HttpResponse("ERROR")
+

@@ -78,29 +78,21 @@ def get_post_list(blogs, current_user_id=None):
             a_list.append(d)
     return a_list
 
-def latest_post_list_view_bak(request):
+def hottest_blog_list_view(request):
     data_dict = {}
-    post_list = Post.objects.all().order_by('-create_time')
-    #for post in posts:
-        #if current_user_id and post.author.id==current_user_id:
-            #post.is_editable = True
+    blog_list = Blog.objects.all().order_by('-followers')
 
-    paginator = Paginator(post_list, constant.NUM_PER_PAGE )
-    page = request.GET.get('page')
+    data_dict['blogs'] = blog_list
+    data_dict['num_per_page'] = constant.NUM_PER_PAGE
+    data_dict['request'] = request #must have
+    return render(request, 'blog_list.html', data_dict)
 
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
-
-    data_dict['posts'] = posts
-    return render(request, 'post_list.html', data_dict)
-
-def latest_post_list_view(request):
+def latest_post_list_view(request, blog_id=None):
     data_dict = {}
-    post_list = Post.objects.all().order_by('-create_time')
+    if blog_id:
+        post_list = Post.objects.filter(blog__id=blog_id).order_by('-create_time')
+    else:
+        post_list = Post.objects.all().order_by('-create_time')
     for post in post_list:
         if post.author.id == request.user.id:
             post.is_editable = True
@@ -108,6 +100,11 @@ def latest_post_list_view(request):
     data_dict['posts'] = post_list
     data_dict['num_per_page'] = constant.NUM_PER_PAGE
     data_dict['request'] = request #must have
+    if request.GET.get('show_info') and blog_id:
+        info_of_list = 'Posts in blog <strong>%s</strong> '\
+                % (Blog.objects.get(pk=blog_id).name)
+        data_dict['info_of_list'] = info_of_list
+        data_dict['blog_ids'] = blog_id
     return render(request, 'post_list.html', data_dict)
 
 def tag_post_list_view(request, tag_id=None, blog_ids=None):

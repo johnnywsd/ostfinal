@@ -18,6 +18,7 @@ from myblog.models import Tag
 from django.db.models import Q
 from myblog import constant
 import html2text
+import goslate
 
 import json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -109,7 +110,8 @@ def my_blogs_own_view(request, blog_id=None):
     for blog in blogs:
         authors = blog.authors.all()
         for author in authors:
-            author_names_set.add(author.first_name)
+            full_name = '%s %s' % (author.first_name , author.last_name)
+            author_names_set.add(full_name)
             author_ids_set.add(str(author.id))
 
     data_dict['author_names'] = ', '.join(author_names_set)
@@ -146,7 +148,8 @@ def my_blogs_shared_view(request, blog_id=None):
     for blog in blogs:
         authors = blog.authors.all()
         for author in authors:
-            author_names_set.add(author.first_name)
+            full_name = '%s %s' % (author.first_name , author.last_name)
+            author_names_set.add(full_name)
 
     data_dict['author_names'] = ', '.join(author_names_set)
     data_dict['post_num'] = len(a_list)
@@ -175,12 +178,14 @@ def my_blogs_following_view(request, blog_id=None):
         data_dict['info_title'] = 'Blogs I Following'
         data_dict['blog_ids'] = ','.join([str(x.id) for x in blogs])
 
-    a_list = get_post_list(blogs)
+    #a_list = get_post_list(blogs)
+    a_list = get_post_list(blogs,current_user_id=user.id)
 
     for blog in blogs:
         authors = blog.authors.all()
         for author in authors:
-            author_names_set.add(author.first_name)
+            full_name = '%s %s' % (author.first_name , author.last_name)
+            author_names_set.add(full_name)
 
     data_dict['author_names'] = ', '.join(author_names_set)
     data_dict['post_num'] = len(a_list)
@@ -190,16 +195,23 @@ def my_blogs_following_view(request, blog_id=None):
     return render(request, 'post_list_following.html', data_dict)
 
 #@login_required
-def post_detail_embedded_view(request, post_id=None):
+def post_detail_embedded_view(request, post_id=None, language_code=None):
     data_dict = {}
     a_list = []
+    content = ""
     if(post_id):
         post = Post.objects.get(pk=post_id)
         data_dict['post'] = post
         data_dict['create_date'] = post.create_time.strftime(constant.DATETIME_FORMAT)
         data_dict['modify_date'] = post.modify_time.strftime(constant.DATETIME_FORMAT)
         data_dict['author_name'] = post.author.first_name
-        data_dict['content'] = post.content
+        content = post.content
+        if language_code:
+            gs = goslate.Goslate()
+            content = gs.translate(content,language_code);
+            data_dict['language_code'] = language_code
+
+        data_dict['content'] = content
         #data_dict['post_id'] = post_id
         if post.author.id == request.user.id:
             data_dict['is_editable'] = True
@@ -240,4 +252,5 @@ def post_edit_embedded_view(request, blog_id=None, post_id=None):
 
             
     return render(request, 'post_embedded_edit.html', data_dict)
+
 

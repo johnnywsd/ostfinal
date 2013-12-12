@@ -1,3 +1,4 @@
+{%load staticfiles%}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -8,7 +9,8 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
 
-  </head> 
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.4/select2.css">
+
   <style type="text/css">
     .post-content{
       margin-top: 10px;
@@ -19,6 +21,7 @@
     .post-title{
       margin-right:10px
     }  </style>
+  </head> 
 <body>
 
   <div style="padding:0px 20px">
@@ -41,13 +44,46 @@
         {%endif%}
       {%endfor%}
     </small></p>
-    <p class="post-content">{{content|safe}}</p>
+    <label>Translate to:</label>
+    <select id="language_selector" style="width:170px">
+    </select>
+    <a href="{%url 'post_detail_embedded_view' post.id %}" 
+      class="btn btn-info btn-xs"
+      style="margin-left:10px">Show Original</a>
     <hr style="width:100%"/>
+    <p class="post-content">{{content|safe}}</p>
   </div>
 
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.4/select2.js"> </script>
+  <script src="{%static 'myblog/js/languages.js'%}"> </script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+          var $selector = $( "#language_selector" );
+          var selectValues =  language_codes;
+          $.each(selectValues, function(key, value) {   
+             $selector
+                 .append($("<option></option>")
+                 .attr("value",key)
+                 .text(value)); 
+          }); 
+          $selector.select2();
+          {%if language_code %}
+          $selector.select2("val", "{{language_code}}");
+          {%else%}
+          $selector.select2("val", "en");
+          {% endif %}
+          $selector.on("change", function(){
+            var url = "{%url 'post_detail_embedded_view' post.id 'xx'%}"
+                      .replace('xx', $selector.val()); 
 
+              location.href = url;
+            });
+
+          <!--$selector.val("en").trigger('change')-->
+        })
+  </script>
 </body>
 
 </html>

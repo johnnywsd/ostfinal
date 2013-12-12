@@ -18,6 +18,19 @@ class Blog(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_posts_num(self):
+        return len(self.post_set.all())
+
+    def get_followers_num(self):
+        return len(self.followers.all())
+
+    def get_creator_full_name(self):
+        return '%s %s' % (self.creator.first_name, self.creator.last_name)
+
+    def get_authors_full_name_list_as_string(self):
+        author_full_names_list = ['%s %s' % (x.first_name, x.last_name) \
+                for x in self.authors.all() ]
+        return ', '.join(author_full_names_list) 
 
 class Tag(models.Model):
     id = models.AutoField(primary_key=True)

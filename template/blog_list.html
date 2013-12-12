@@ -1,0 +1,186 @@
+{% load url from future %}
+{% load pagination_tags %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+
+  <style type="text/css">
+    .post-content{
+      margin-top: 10px;
+    }
+    .continue-link{
+      margin-left:10px;
+    }
+    .post-title{
+      margin-right:10px
+    }
+    .edit-link{
+      font-size:16px
+    }
+  </style>
+
+  {%block script%}
+
+  {%endblock%}
+
+  <script type="text/javascript">
+    function follow_togger(e, blog_id){
+      var caller = e.target || e.srcElement;
+      var $this = $(caller);
+      $.ajax({
+              url: "{%url 'toggle_follow_ajax'%}",
+              type: "GET",
+              data:{
+                      user_id:"{{user.id}}",
+                      blog_id: blog_id
+                    }
+            }).done(function(data){
+                console.log(data);
+                var is_followed = data.is_followed;
+                if (is_followed == 0){
+                  $this.data("is_followed", 0);
+                  <!--$this.html("Follow");-->
+                  setToFollow($this);
+                }else{
+                  $this.data("is_followed", 1);
+                  <!--$this.html("Following");-->
+                  setToFollowing($this);
+                }
+                      });
+      <!--if ($this.data("is_followed") == 1){-->
+        <!--$this.data("is_followed", 0);-->
+        <!--$this.html("Follow");-->
+      <!--}else{-->
+        <!--$this.data("is_followed", 1);-->
+        <!--$this.html("Following");-->
+      <!--}-->
+
+    }
+  function setToFollowing($btn){
+    $btn.html("<span class=\"glyphicon glyphicon-ok\"></span> Following");
+    $btn.attr("class","btn btn-info btn-xs");
+
+  }
+  function setToFollow($btn){
+    $btn.html("Follow")
+    $btn.attr("class","btn btn-default btn-xs");
+  }
+  </script>
+  </head> 
+<body>
+
+  {% block info %}
+
+  {% endblock %}
+  
+  {%if info_of_list%}
+  <div class="alert alert-info alert-dismissable" 
+    style="margin:5px; line-height:1em">
+      <button type="button" class="close" 
+        data-dismiss="alert" aria-hidden="true">&times;</button>
+      <span style="font-size:20px">{{info_of_list|safe}}</span>
+  </div>
+  {%endif%}
+
+  {%with num_per_page=num_per_page|default:10 %}
+  {% autopaginate blogs num_per_page %}
+  {%for blog in blogs%}
+  {%url 'latest_post_list_view' blog_id=blog.id as blog_detail_url%}
+  {%url 'my_blogs_following_view' blog_id=blog.id as blog_detail_url%}
+  <div style="padding:0px 20px">
+    <h2>
+      <a class="post-title"
+        href="{{blog_detail_url}}?show_info=1">
+        {{blog.name}}
+      </a>
+
+      {% if user.is_authenticated and user in blog.followers.all %}
+      <button class="btn btn-info btn-xs" 
+        onclick="follow_togger(event, {{blog.id}})">
+        <span class="glyphicon glyphicon-ok"></span> 
+        Following</button>
+      {%else%}
+      <button class="btn btn-default btn-xs" 
+        onclick="follow_togger(event, {{blog.id}})">Follow</button>
+      {% endif %}
+
+      {% if blog.is_editable %}
+      <small><a class="edit-link" href="">( Edit ) </a></small>
+      <small><a class="edit-link" 
+          data-post-id="{{post.id}}" 
+          data-post-title="{{post.title}}" 
+          onclick="showModal(event)" 
+          href="javascript:void(0)"> ( Delete ) </a></small>
+      {%endif%}
+    </h2>
+      <small>Creator: <strong>{{blog.get_creator_full_name}} </strong></small>
+      <br>
+      {%if blog.get_authors_full_name_list_as_string %}
+      <small>Collaborators: 
+        <strong>{{blog.get_authors_full_name_list_as_string}} </strong>
+      </small>
+      <br>
+      {%endif%}
+      <small>Posts Num: 
+        <strong>{{blog.get_posts_num}} </strong>
+      </small>
+      <br>
+      <small>Followers Num: 
+        <strong>{{blog.get_followers_num}} </strong>
+      </small>
+      <br>
+
+    <hr style="width:100%"/>
+  </div>
+  {%endfor%}
+
+  <div style="text-align:center">
+  {% paginate %}
+  </div>
+
+  {%endwith%}
+  <!--<div style="text-align:center">-->
+<!--{% paginate %}-->
+    <!--<ul class="pagination">-->
+      <!--<li class="disabled"><a href="#">&laquo;</a></li>-->
+      <!--<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>-->
+      <!--<li ><a href="#">2 <span class="sr-only">(current)</span></a></li>-->
+      <!--<li ><a href="#">3 <span class="sr-only">(current)</span></a></li>-->
+      <!--<li ><a href="#">4 <span class="sr-only">(current)</span></a></li>-->
+      <!--<li ><a href="#">5 <span class="sr-only">(current)</span></a></li>-->
+      <!--<li ><a href="#">&raquo;</a></li>-->
+    <!--</ul>-->
+
+<!--</div>-->
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+<!--<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">-->
+  <!--Launch demo modal-->
+<!--</button>-->
+<script type="text/javascript">
+  function showModal(e){
+    var caller = e.target || e.srcElement;
+    var post_id = $(caller).data('post-id');
+    var post_title = $(caller).data('post-title');
+    console.log(post_id);
+    var $deleteModal = window.parent.$("#deleteModal");
+    <!--console.log($deleteModal);-->
+    $deleteModal.find("#post_title").text(post_title);
+    $deleteModal.find("#deleteBtn").data("post-id",post_id);
+    $deleteModal.modal()
+    <!--console.log(window.parent.$("#deleteModal").html())-->
+    <!--window.parent.$("#deleteModal").modal()-->
+  }
+</script>
+<!-- Modal -->
+
+</body>
+
+</html>

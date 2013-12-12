@@ -91,6 +91,8 @@
 
 <div class="row">
 <div class="jumbotron">
+      <button type="button" class="close" 
+        data-dismiss="alert" aria-hidden="true">&times;</button>
     <h1>OST Blog</h1>
     <p>This is the final project of Open Source Tools, Fall 2013, NYU. It uses AWS EC2 as server, RDS as its database, S3 as its storage for videos and other files. It also uses CloudFront to distribute its storage. </p>
     <p class="pull-right"><small>by Shouda Wang.<small> </p>
@@ -110,7 +112,7 @@
       <!--onclick="showHottestBlogs()">Hottest Blogs</a></li>-->
     <li class="active tab-title"><a href="{%url 'latest_post_list_view'%}" 
       target='tab-content'>Latest Posts</a></li>
-    <li class="tab-title"><a href="{%url 'latest_post_list_view'%}" 
+    <li class="tab-title"><a href="{%url 'hottest_blog_list_view'%}" 
       target='tab-content'>Hottest Blogs</a></li>
   </ul>
 </div>

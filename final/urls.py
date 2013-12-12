@@ -36,6 +36,13 @@ urlpatterns = patterns('',
     url(r'^latest_post_list/$', 'myblog.views.latest_post_list_view',
         name='latest_post_list_view'),
 
+    url(r'^latest_post_list/(?P<blog_id>\d+)/$',
+        'myblog.views.latest_post_list_view',
+        name='latest_post_list_view'),
+
+    url(r'^hottest_blog_list_view/$', 'myblog.views.hottest_blog_list_view',
+        name='hottest_blog_list_view'),
+
     url(r'^tag_post_list/(?P<tag_id>\d+)/$', 'myblog.views.tag_post_list_view',
         name='tag_post_list_view'),
     url(r'^tag_post_list/(?P<tag_id>\d+)/(?P<blog_ids>[0-9,]*)/$',
@@ -46,5 +53,8 @@ urlpatterns = patterns('',
 
     url(r'^get_tags_ajax$', 'myblog.interacts.get_tags_ajax',
         name='get_tags_ajax'),
+
+    url(r'^toggle_follow_ajax$', 'myblog.interacts.toggle_follow_ajax',
+        name='toggle_follow_ajax'),
 
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

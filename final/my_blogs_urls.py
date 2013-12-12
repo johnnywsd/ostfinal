@@ -32,6 +32,10 @@ urlpatterns = patterns('',
         'myblog.my_blogs_views.post_detail_embedded_view',
         name='post_detail_embedded_view'),
 
+    url(r'^post_detail/(?P<post_id>\d+)/(?P<language_code>\S{2,5})/$',
+        'myblog.my_blogs_views.post_detail_embedded_view',
+        name='post_detail_embedded_view'),
+
     url(r'^post_edit/$',
         'myblog.my_blogs_views.post_edit_embedded_view',
         name='post_edit_embedded_view'),
