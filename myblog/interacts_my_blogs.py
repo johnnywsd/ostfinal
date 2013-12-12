@@ -33,7 +33,7 @@ def post_edit_interact(request, blog_id=None, post_id=None):
             title = form.cleaned_data['title']
             content = form.cleaned_data['content']
             tags_str = form.cleaned_data['tags'].strip()
-            tag_names =[ x.strip for x in tags_str.split(',') ]
+            tag_names =[ x.strip() for x in tags_str.split(',') ]
             tags = []
             if not tags_str:
                 tag_names = [constant.NO_TAG]
