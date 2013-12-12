@@ -105,7 +105,7 @@
         onclick="follow_togger(event, {{blog.id}})">
         <span class="glyphicon glyphicon-ok"></span> 
         Following</button>
-      {%else%}
+      {%elif user.id != blog.creator.id %}
       <button class="btn btn-default btn-xs" 
         onclick="follow_togger(event, {{blog.id}})">Follow</button>
       {% endif %}
