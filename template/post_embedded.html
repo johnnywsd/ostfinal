@@ -11,6 +11,11 @@
 
   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.4/select2.css">
 
+<!--Share this -->
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "2e3d7b0e-7b02-4ead-9407-dca1c80c2674", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
   <style type="text/css">
     .post-content{
       margin-top: 10px;
@@ -50,6 +55,27 @@
     <a href="{%url 'post_detail_embedded_view' post.id %}" 
       class="btn btn-info btn-xs"
       style="margin-left:10px">Show Original</a>
+    <!--<div style="height:30px; margin-top:30px">-->
+<!--<span class='st_facebook' displayText='Facebook'></span>-->
+<!--<span class='st_twitter' displayText='Tweet'></span>-->
+<!--<span class='st_googleplus' displayText='Google +'></span>-->
+<!--<span class='st_email' displayText='Email'></span>-->
+    <!--</div>-->
+    <div style="height:20px; margin-top:10px">
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+<a class="addthis_button_preferred_1"></a>
+<a class="addthis_button_preferred_2"></a>
+<a class="addthis_button_preferred_3"></a>
+<a class="addthis_button_preferred_4"></a>
+<a class="addthis_button_compact"></a>
+<!--<a class="addthis_counter addthis_bubble_style"></a>-->
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52aa2bc44cee00d9"></script>
+<!-- AddThis Button END -->
+</div>
+    <br>
     <hr style="width:100%"/>
     <p class="post-content">{{content|safe}}</p>
   </div>

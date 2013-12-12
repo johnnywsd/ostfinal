@@ -172,6 +172,7 @@ def my_blogs_following_view(request, blog_id=None):
         data_dict['blog_id'] = blog_id
         data_dict['blog_ids'] = blog_id
         data_dict['blog_name'] = blog.name
+        data_dict['blog'] = blog
         
     else:
         blogs = user.follower_blogs.all();
