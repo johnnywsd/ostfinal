@@ -41,6 +41,9 @@ INSTALLED_APPS = (
     'south',
     'pagination_bootstrap',
     'ckeditor',
+    'django.contrib.sites',
+    'django.contrib.comments',
+    'django_comments_xtd',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,6 +60,10 @@ ROOT_URLCONF = 'final.urls'
 
 WSGI_APPLICATION = 'final.wsgi.application'
 
+
+#COMMENT
+COMMENTS_APP = "django_comments_xtd"
+COMMENTS_XTD_CONFIRM_EMAIL = False
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

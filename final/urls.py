@@ -13,6 +13,8 @@ urlpatterns = patterns('',
 
     url(r'^$', 'myblog.views.home_view', name='home'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^comments/', include('django_comments_xtd.urls')),
+
     url(r'^index$', 'myblog.views.home_view', name='home'),
     url(r'^sign_up$', 'myblog.views.sign_up_view', name='sign_up'),
     url(r'^sign_up_interact$', 'myblog.interacts.sign_up_interact', name='sign_up_interact'),
@@ -56,5 +58,8 @@ urlpatterns = patterns('',
 
     url(r'^toggle_follow_ajax$', 'myblog.interacts.toggle_follow_ajax',
         name='toggle_follow_ajax'),
+
+    url(r'^search_in_blogs$', 'myblog.views.search_in_blogs',
+        name='search_in_blogs'),
 
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

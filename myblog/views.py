@@ -136,3 +136,28 @@ def tag_post_list_view(request, tag_id=None, blog_ids=None):
     data_dict['num_per_page'] = constant.NUM_PER_PAGE
     data_dict['request'] = request #must have
     return render(request, 'post_list.html', data_dict)
+
+def search_in_blogs(request):
+    data_dict = {}
+    blog_ids_str = request.GET.get('blog_ids')
+    blog_ids = blog_ids_str.strip().split(',')
+    key_word = request.GET.get('key_word')
+    blog_names = [ x.name for x in Blog.objects.filter(pk__in=blog_ids)]
+    if blog_names:
+        blog_names = ', '.join(blog_names)
+    posts = Post.objects.filter(blog__id__in=blog_ids,
+            content__icontains=key_word)
+    if request.user:
+        for post in posts:
+            if post.author.id == request.user.id:
+                post.is_editable = True
+    data_dict['posts'] = posts
+    data_dict['num_per_page'] = constant.NUM_PER_PAGE
+    data_dict['request'] = request
+    data_dict['blog_ids'] = blog_ids_str
+    info_of_list = 'Search key word: <strong>%s</strong> \
+            in blog <strong>%s</strong>' \
+            % (key_word, blog_names)
+    data_dict['info_of_list'] = info_of_list
+    return render(request, 'post_list.html', data_dict)
+

@@ -45,6 +45,10 @@
   </div>
   {%endif%}
 
+  {% if blog_ids %}
+  {% include 'search_part.html' %}
+  {% endif %}
+
   {%with num_per_page=num_per_page|default:10 %}
   {% autopaginate posts num_per_page %}
   {%for post in posts%}
