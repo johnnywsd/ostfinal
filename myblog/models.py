@@ -64,15 +64,15 @@ class Post(models.Model):
     def get_author_full_name(self):
         return '%s %s' % (self.author.first_name, self.author.last_name)
 
-class Comment(models.Model):
-    id = models.AutoField(primary_key=True)
-    post = models.ForeignKey(Post)
-    author = models.ForeignKey(User)
-    content = models.TextField(blank=True, null=True)
-    create_time = models.DateTimeField(auto_now_add=True)
+#class Comment(models.Model):
+    #id = models.AutoField(primary_key=True)
+    #post = models.ForeignKey(Post)
+    #author = models.ForeignKey(User)
+    #content = models.TextField(blank=True, null=True)
+    #create_time = models.DateTimeField(auto_now_add=True)
 
-    def __unicode__(self):
-        return self.content
+    #def __unicode__(self):
+        #return self.content
 
 IMG_PATH = 'img'
 def filename2uuid(instance, filename, path=IMG_PATH):
