@@ -1,0 +1,26 @@
+{% load i18n comments %}
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+<div class="panel panel-info" style="margin:10px">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <span>{% trans "Reply to" %}:</span>
+    </div>
+  </div>
+  <dl id="parent-comment" 
+    style="background: #fff; 
+    padding: 10px; border: 1px solid #ccc; 
+    border-radius: 4px; margin:10px">
+    <dt id="c{{ comment.id }}">
+      {{ comment.submit_date }}&nbsp;-&nbsp;{{ comment.name }}
+    </dt>
+    <dd>
+      <p>{{ comment.comment }}</p>
+    </dd>
+  </dl>
+  <div id="comment-form">
+    {% include "comments/form.html" %}
+  </div>
+</div>

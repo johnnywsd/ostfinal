@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     #'django_comments',
     'django.contrib.comments',
     'django_comments_xtd',
+    #'tracking',
 )
 
 MIDDLEWARE_CLASSES = (
