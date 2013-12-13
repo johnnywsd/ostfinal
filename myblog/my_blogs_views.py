@@ -216,6 +216,10 @@ def post_detail_embedded_view(request, post_id=None, language_code=None):
         #data_dict['post_id'] = post_id
         if post.author.id == request.user.id:
             data_dict['is_editable'] = True
+        data_dict['next'] = reverse(
+                'post_detail_embedded_view',
+                args=( post_id, language_code)
+                )
     return render(request, 'post_embedded.html', data_dict)
 
 @login_required

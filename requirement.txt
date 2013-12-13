@@ -6,7 +6,7 @@ Pillow==2.2.1
 South==0.8.4
 argparse==1.2.1
 boto==2.19.0
-django-comments-xtd==1.2a1
+django-comments-xtd==1.2
 django-contrib-comments==1.5
 django-pagination-bootstrap==1.0.5
 django-storages==1.1.8

@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'pagination_bootstrap',
     'ckeditor',
     'django.contrib.sites',
+    #'django_comments',
     'django.contrib.comments',
     'django_comments_xtd',
 )
@@ -63,8 +64,10 @@ WSGI_APPLICATION = 'final.wsgi.application'
 
 #COMMENT
 COMMENTS_APP = "django_comments_xtd"
+#COMMENTS_APP = "django_comments"
 COMMENTS_XTD_CONFIRM_EMAIL = False
 COMMENTS_XTD_MAX_THREAD_LEVEL = 3
+SITE_ID = 1
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
