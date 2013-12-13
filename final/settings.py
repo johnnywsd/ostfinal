@@ -64,6 +64,7 @@ WSGI_APPLICATION = 'final.wsgi.application'
 #COMMENT
 COMMENTS_APP = "django_comments_xtd"
 COMMENTS_XTD_CONFIRM_EMAIL = False
+COMMENTS_XTD_MAX_THREAD_LEVEL = 3
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
